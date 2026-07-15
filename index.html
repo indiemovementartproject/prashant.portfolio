@@ -355,6 +355,25 @@
   .reel-open { font-family: var(--font-mono); font-size: 10px; color: var(--ember-2); }
   @media (max-width: 640px) { .reel-card { width: 150px; } }
 
+  .action-wrap { position: relative; display: inline-flex; }
+  .reveal-bubble {
+    position: absolute; top: calc(100% + 12px); left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    background: rgba(20,16,30,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-line); border-radius: 8px;
+    padding: 9px 14px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text);
+    letter-spacing: 0.02em; white-space: nowrap; cursor: pointer;
+    opacity: 0; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 120;
+  }
+  .reveal-bubble::before {
+    content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    border: 6px solid transparent; border-bottom-color: rgba(20,16,30,0.92);
+  }
+  .reveal-bubble.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  .rb-copied { display: none; color: var(--ember-3); }
+  .reveal-bubble.copied .rb-value { display: none; }
+  .reveal-bubble.copied .rb-copied { display: inline; }
+
     /* ============ LIGHTBOX ============ */
   .lb {
     position: fixed; inset: 0; z-index: 500;
@@ -486,7 +505,7 @@
     </p>
     <div class="hero-ctas">
       <a href="#work" class="btn btn-primary">See the work</a>
-      <a href="#contact" class="btn btn-ghost">Call NAIR</a>
+      <a href="tel:+919819462901" class="btn btn-ghost" data-reveal="+91 98194 62901" data-copy="+919819462901">Call NAIR</a>
     </div>
   </div>
 </section>
@@ -785,13 +804,12 @@
   </div>
   <div class="shot">
     <div class="about-grid">
-      <div class="about-photo glass" role="img" aria-label="Portrait of NAIR"></div>
+      <div class="about-photo glass" role="img" aria-label="Portrait of Prashant Nair"></div>
       <p>
-        I'm NAIR. I build campaigns end to end, from the first line of script to the
-        final mix, all from one desk. Brands call me in when they want one mind on the
-        whole project instead of a brief passed between five people who never meet.
-        One vision, held start to finish, delivered faster than a team can agree on a
-        timeline. (Swap this for your own story when you're ready. The voice is set.)
+        Prashant Nair. I build campaigns end to end, from the first line of script to
+        the final mix, all from one desk. Brands call me in when they want one mind on
+        the whole project instead of a brief passed between five people who never meet.
+        One vision, held start to finish, delivered with top-notch efficiency.
       </p>
     </div>
   </div>
@@ -808,8 +826,8 @@
       Send the brief. A reply lands within a day, from the person who does the work.
     </p>
     <div class="contact-links">
-      <a href="mailto:vibesconnect96@gmail.com" class="btn btn-primary">Email</a>
-      <a href="tel:+919819462901" class="btn btn-ghost">Call</a>
+      <a href="mailto:vibesconnect96@gmail.com" class="btn btn-primary" data-reveal="vibesconnect96@gmail.com" data-copy="vibesconnect96@gmail.com">Email</a>
+      <a href="tel:+919819462901" class="btn btn-ghost" data-reveal="+91 98194 62901" data-copy="+919819462901">Call</a>
     </div>
   </div>
 </section>
@@ -941,11 +959,14 @@
     ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'lighter';
 
+    const mobile = window.innerWidth <= 640;
+
     cursor.x += (cursor.tx - cursor.x) * 0.16;
     cursor.y += (cursor.ty - cursor.y) * 0.16;
 
     for (let i = 0; i < orbs.length; i++) {
       const o = orbs[i];
+      if (mobile) { drawOrb(o.x, o.y, o.r * 3, o.color, 0.40); continue; }
       o.vx += (Math.random() - 0.5) * CHAOS;
       o.vy += (Math.random() - 0.5) * CHAOS;
       o.x += o.vx; o.y += o.vy;
@@ -1061,6 +1082,46 @@
     const amount = () => Math.max(260, track.clientWidth * 0.8);
     if (prev) prev.addEventListener('click', () => track.scrollBy({ left: -amount(), behavior: 'smooth' }));
     if (next) next.addEventListener('click', () => track.scrollBy({ left: amount(), behavior: 'smooth' }));
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  document.querySelectorAll('[data-reveal]').forEach(btn => {
+    const wrap = document.createElement('span');
+    wrap.className = 'action-wrap';
+    btn.parentNode.insertBefore(wrap, btn);
+    wrap.appendChild(btn);
+    const bubble = document.createElement('span');
+    bubble.className = 'reveal-bubble';
+    bubble.innerHTML = '<span class="rb-value"></span><span class="rb-copied">Copied &#10003;</span>';
+    bubble.querySelector('.rb-value').textContent = btn.dataset.reveal;
+    wrap.appendChild(bubble);
+
+    btn.addEventListener('click', e => {
+      if (!isDesktop) return;               // mobile: let tel/mailto fire natively
+      e.preventDefault();
+      document.querySelectorAll('.reveal-bubble.show').forEach(b => { if (b !== bubble) b.classList.remove('show'); });
+      bubble.classList.toggle('show');
+      bubble.classList.remove('copied');
+    });
+    bubble.addEventListener('click', e => {
+      e.stopPropagation();
+      const val = btn.dataset.copy || btn.dataset.reveal;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(val).then(() => {
+          bubble.classList.add('copied');
+          setTimeout(() => bubble.classList.remove('copied'), 1500);
+        });
+      }
+    });
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.action-wrap')) {
+      document.querySelectorAll('.reveal-bubble.show').forEach(b => b.classList.remove('show'));
+    }
   });
 })();
 </script>
