@@ -107,10 +107,11 @@
     font-size:12px;color:var(--text);opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  #overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;text-align:center;padding:24px;
+  #overlay{position:fixed;inset:0;z-index:20;overflow-y:auto;text-align:center;padding:28px 24px;
     background:radial-gradient(ellipse at center,rgba(7,10,12,.5),rgba(7,10,12,.86))}
   #overlay.gone{opacity:0;pointer-events:none;transition:opacity .7s}
-  .card{max-width:500px;position:relative}
+  .card{max-width:500px;margin:0 auto;min-height:calc(100% - 2px);position:relative;
+    display:flex;flex-direction:column;align-items:center;justify-content:center}
   .glyph{width:92px;height:92px;margin:0 auto 28px;position:relative}
   .glyph svg{width:100%;height:100%;filter:drop-shadow(0 0 14px rgba(92,225,230,.55))}
   .oname{font-family:var(--serif);font-weight:400;font-size:78px;letter-spacing:.05em;line-height:1;
@@ -134,12 +135,49 @@
     @keyframes pulse{0%,100%{opacity:.25;transform:scale(.9)}50%{opacity:.6;transform:scale(1.12)}}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
   }
+  /* ---- auto-hiding chrome (mobile clean view) ---- */
+  #dock,#brand,#status,#helpBtn{transition:opacity .35s ease,transform .35s ease}
+  /* live HUD stays hidden until the camera actually starts (keeps the intro screen clean) */
+  body:not(.live) #dock,body:not(.live) #brand,body:not(.live) #status,
+  body:not(.live) #helpBtn,body:not(.live) #legend{opacity:0;pointer-events:none}
+  body.chrome-hidden #dock,body.chrome-hidden #brand,body.chrome-hidden #status,
+  body.chrome-hidden #helpBtn,body.chrome-hidden #legend{opacity:0;pointer-events:none}
+  body.chrome-hidden #dock{transform:translateX(-50%) translateY(135%)}
+  #tapHint{left:50%;bottom:26px;transform:translateX(-50%);z-index:6;font-family:var(--mono);
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    background:rgba(7,10,12,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border:1px solid var(--border);padding:8px 15px;border-radius:999px;opacity:0;
+    transition:opacity .4s;pointer-events:none}
+  #tapHint.show{opacity:1}
+
   @media (max-width:880px){
-    #dock{flex-wrap:wrap;justify-content:center;gap:10px;padding:12px}
-    #now{border-right:none;padding-right:0}
-    #loop{border:none;padding:0}
-    #legend{left:16px;right:16px;width:auto}
-    .oname{font-size:60px}
+    /* dock becomes a compact bottom sheet; secondary readouts hidden (on-body glows show feedback) */
+    #dock{left:0;right:0;bottom:0;transform:none;max-width:none;width:100%;
+      border-radius:18px 18px 0 0;flex-wrap:wrap;gap:11px;justify-content:center;
+      padding:14px 14px calc(16px + env(safe-area-inset-bottom))}
+    #dock #now,#dock #chips{display:none}
+    #loop,#settings{border:none;padding:0;flex:1 1 100%}
+    #loop .row,#settings .row{justify-content:center;flex-wrap:wrap;gap:8px}
+    #loopBar{width:100%}
+    select,.btn{font-size:13px;padding:11px 14px}
+    #loopBtn{min-width:88px}
+    #brand{top:15px;left:16px}
+    #brand .name{font-size:23px}
+    #brand .tag{font-size:10px}
+    #status{top:17px;right:16px}
+    #helpBtn{top:52px;right:16px}
+    #legend{left:12px;right:12px;top:auto;bottom:112px;width:auto;max-height:52vh;overflow:auto}
+    body.chrome-hidden #dock{transform:translateY(120%)}
+    .oname{font-size:54px}
+    #hint{font-size:14px;max-width:82vw}
+  }
+  @media (max-height:600px){
+    .glyph{width:60px;height:60px;margin-bottom:14px}
+    .oname{font-size:42px}
+    .osub{margin-top:8px}
+    .odesc{margin:14px auto 20px;font-size:14px;line-height:1.6}
+    .fine{margin-top:14px}
+    #go{padding:12px 26px}
   }
 </style>
 </head>
@@ -175,6 +213,7 @@
 
   <div class="hud" id="hint"><b>Step back</b> so your whole body is in frame — then simply move.</div>
   <div class="hud" id="toast"></div>
+  <div class="hud" id="tapHint">Tap to show controls</div>
 
   <div class="hud" id="dock">
     <div id="now">
@@ -762,8 +801,9 @@
       const camera=new Camera(video,{onFrame:async()=>{await pose.send({image:video});},width:640,height:480,facingMode:'user'});
       await camera.start();
       window.AURA_LIVE=true;               // pause background orbs to protect tracking FPS
+      document.body.classList.add('live');
       overlay.classList.add('gone'); setStatus('live',true);
-      uiLoop();
+      uiLoop(); armMobileChrome();
     }catch(err){
       console.error(err); goBtn.disabled=false; goBtn.textContent='Enable camera & move'; setStatus('standby',false);
       const n=err&&err.name;
@@ -773,6 +813,29 @@
     }
   }
   goBtn.onclick=start;
+
+  // ============================================================
+  //  MOBILE: clean screen while moving; tap reveals; auto-hide 5s
+  // ============================================================
+  const isMobile = matchMedia('(pointer:coarse)').matches || innerWidth<=880;
+  const tapHint = el('tapHint');
+  let idleTimer=0, chromeShown=true;
+  function flashHint(){ if(!tapHint) return; tapHint.classList.add('show');
+    clearTimeout(flashHint._t); flashHint._t=setTimeout(()=>tapHint.classList.remove('show'),2600); }
+  function resetIdle(){ if(!isMobile||!chromeShown) return; clearTimeout(idleTimer); idleTimer=setTimeout(hideChrome,5000); }
+  function showChrome(){ document.body.classList.remove('chrome-hidden'); chromeShown=true;
+    if(tapHint) tapHint.classList.remove('show'); resetIdle(); }
+  function hideChrome(){ if(!isMobile) return; document.body.classList.add('chrome-hidden'); chromeShown=false;
+    clearTimeout(idleTimer); if(legend) legend.classList.remove('show'); flashHint(); }
+  function toggleChrome(){ chromeShown ? hideChrome() : showChrome(); }
+  function armMobileChrome(){ if(!isMobile) return; hideChrome(); }
+  addEventListener('pointerup',e=>{
+    if(!isMobile) return;
+    if(overlay && !overlay.classList.contains('gone')) return;      // ignore before start
+    if(e.target.closest('#dock,#legend,#helpBtn,#brand,#status,#tapHint,button,select')){ resetIdle(); return; }
+    toggleChrome();
+  });
+  ['pointerdown','change','input'].forEach(ev=>el('dock').addEventListener(ev,resetIdle));
   </script>
 </body>
 </html>
