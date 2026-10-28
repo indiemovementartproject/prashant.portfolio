@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NAIR - Agency too expensive to hire? Better call NAIR.</title>
+<title>Prashant Nair · NAIR · Video, AI and creative technology</title>
+<meta name="description" content="Prashant Nair (NAIR) writes, shoots, edits, scores and codes. Nine years of video, campaigns and AI content, plus the web tools behind them. Open to full-time roles and freelance projects.">
+<link rel="canonical" href="https://www.naironcall.com/">
+<meta name="theme-color" content="#09080F">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.naironcall.com/">
+<meta property="og:site_name" content="NAIR">
+<meta property="og:title" content="Prashant Nair · Video, AI and creative technology">
+<meta property="og:description" content="Nine years of video, campaigns and AI content, plus the web tools behind them. Open to full-time roles and freelance projects.">
+<meta property="og:image" content="https://www.naironcall.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="NAIR. Prashant Nair, video, AI and creative technology.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.naironcall.com/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -316,12 +332,13 @@
   @media (max-width: 640px) { .build-card { width: 268px; } }
 
     /* ============ JOURNEY TIMELINE ============ */
-  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; position: relative; }
+  .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 44px; position: relative; }
+  .tl-stage .tl-org { font-size: 12.5px; color: var(--text); opacity: 0.8; margin: -2px 0 8px; }
   .timeline::before {
     content: ''; position: absolute; top: -1px; left: 12%; right: 12%; height: 2px;
     background: linear-gradient(90deg, var(--ember-1), var(--ember-3), var(--ice)); opacity: 0.5;
   }
-  .tl-stage { position: relative; padding: 40px 22px 24px; border-radius: 14px; text-align: center; }
+  .tl-stage { position: relative; padding: 36px 16px 22px; border-radius: 14px; text-align: center; }
   .tl-node {
     position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
     width: 18px; height: 18px; border-radius: 50%;
@@ -331,7 +348,7 @@
   .tl-step { font-family: var(--font-mono); font-size: 12px; color: var(--ice); display: block; margin-bottom: 6px; }
   .tl-stage h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
   .tl-stage p { font-size: 13.5px; color: var(--muted); }
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
     .timeline { grid-template-columns: 1fr; gap: 16px; }
     .timeline::before { display: none; }
     .tl-stage { text-align: left; padding: 24px 22px; }
@@ -453,6 +470,32 @@
   .about-grid p { font-size: 16px; color: var(--muted); max-width: 58ch; }
   @media (max-width: 620px) { .about-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; } .about-photo { max-width: 150px; } }
 
+  /* ============ HERO BYLINE ============ */
+  .byline {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+    color: var(--muted); margin-top: 14px; text-transform: uppercase;
+  }
+  @media (max-width: 640px) { .byline { font-size: 10.5px; letter-spacing: 0.1em; } .byline .city { display: none; } }
+
+  /* ============ NUMBERS ============ */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+  .stat { padding: 26px 22px; border-radius: 12px; }
+  .stat-num {
+    display: block; font-family: 'Chakra Petch', var(--font-body); font-weight: 700;
+    font-size: clamp(34px, 4vw, 44px); line-height: 1; margin-bottom: 12px;
+  }
+  .stat p { font-size: 13.5px; color: var(--muted); }
+  @media (max-width: 900px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .stat { padding: 20px 16px; } .stat p { font-size: 12.5px; } }
+
+  /* ============ BRANDS ============ */
+  .brands { margin-top: 40px; text-align: center; }
+  .brands-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); }
+  .brands-list {
+    margin-top: 14px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px;
+    font-family: 'Chakra Petch', var(--font-body); font-weight: 600; font-size: 17px; color: var(--text); opacity: 0.85;
+  }
+
   /* ============ CONTACT ============ */
   #contact { text-align: center; }
   #contact .shot { display: flex; flex-direction: column; align-items: center; }
@@ -493,8 +536,9 @@
 
 <section id="hero" data-title="DISPATCH">
   <div class="shot">
-    <span class="oncall glass"><span class="beacon"></span> LINE OPEN</span>
-    <div class="wordmark ember-text">NAIR</div>
+    <span class="oncall glass"><span class="beacon"></span> LINE OPEN · FULL-TIME + FREELANCE</span>
+    <h1 class="wordmark ember-text">NAIR</h1>
+    <div class="byline">Prashant Nair · Creative technologist<span class="city"> · Mumbai</span></div>
     <div class="tagline">When <span class="tag-ital">ONE</span> is all you can hire,<br class="mob-break"> better call <span class="tag-ital">NAIR</span>.</div>
     <p class="subhead desk-only">
       One person with the output of a whole team. Strategy, script, visuals, motion,
@@ -506,6 +550,34 @@
     <div class="hero-ctas">
       <a href="#work" class="btn btn-primary">See the work</a>
       <a href="tel:+919819462901" class="btn btn-ghost" data-reveal="+91 98194 62901" data-copy="+919819462901">Call NAIR</a>
+    </div>
+  </div>
+</section>
+
+<section id="numbers" data-title="THE NUMBERS">
+  <div class="audio-lead">
+    <span class="waveform"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    A1 · THE NUMBERS
+  </div>
+  <div class="shot">
+    <h2 class="section-heading center-head">Nine years of shipping. Here is what it adds up to.</h2>
+    <div class="stat-row">
+      <div class="stat glass">
+        <span class="stat-num ember-text">1,000+</span>
+        <p>Paid applications from the ATLAS Admissions 2026 campaign, with 200K+ leads and 500K+ reach. I produced its video.</p>
+      </div>
+      <div class="stat glass">
+        <span class="stat-num ember-text">140</span>
+        <p>Marketing content pieces a year at ATLAS, concept to final cut, in-house with no agency.</p>
+      </div>
+      <div class="stat glass">
+        <span class="stat-num ember-text">4 to 11</span>
+        <p>iMAP batches in three years, with the academy's brand, content and website in my hands.</p>
+      </div>
+      <div class="stat glass">
+        <span class="stat-num ember-text">12 hrs</span>
+        <p>Of admin saved every month by the attendance and fees app I built for iMAP's instructors.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -559,7 +631,7 @@
   </div>
   <div class="shot">
     <h2 class="section-heading center-head">Written, built, scored and finished by one person.</h2>
-    <p class="reel-intro">Browse by medium. Film, working code, sound and stills. Every piece was carried end to end by one person.</p>
+    <p class="reel-intro">Film and working code. Every piece was carried end to end by one person.</p>
 
     <div class="work-row">
       <div class="row-head">
@@ -634,7 +706,7 @@
     <div class="work-row">
       <div class="row-head">
         <h3>Builds</h3>
-        <span class="row-tag">Vibe coded · shipped</span>
+        <span class="row-tag">Built and shipped</span>
         <div class="row-nav"><button class="row-prev" aria-label="Scroll left">&#8249;</button><button class="row-next" aria-label="Scroll right">&#8250;</button></div>
       </div>
       <div class="row-track">
@@ -656,7 +728,7 @@
             <span class="build-live">LIVE</span>
           </div>
           <h3>Count Me In</h3>
-          <p>A free browser tool built for the iMAP site, made to help dancers and choreographers work with counts and timing.</p>
+          <p>A free browser tool that lets a dancer add cue music to a performance track and export it in minutes, with zero audio skills. It removed the last-minute rush before every showcase.</p>
           <div class="build-stack"><span>JS</span><span>Web Audio</span></div>
           <span class="build-go">Open the tool &#8599;</span>
         </a>
@@ -673,6 +745,50 @@
           <span class="build-go">Play it &#8599;</span>
         </a>
 
+        <a class="build-card glass" href="https://fractioncrew-blip.github.io/fraction-portfolio/" target="_blank" rel="noopener">
+          <div class="build-top">
+            <span class="build-kind">CLIENT SITE</span>
+            <span class="build-live">LIVE</span>
+          </div>
+          <h3>Fraction - dance collective portfolio</h3>
+          <p>A portfolio site for Team Fraction, a Mumbai dance collective: film playlists, brand work and creator collaborations, built for phones first and handed over to the client's own GitHub.</p>
+          <div class="build-stack"><span>HTML</span><span>CSS</span><span>JS</span><span>ffmpeg</span></div>
+          <span class="build-go">Visit site &#8599;</span>
+        </a>
+
+        <a class="build-card glass" href="https://www.indiemovementartproject.com/sync-studio.html" target="_blank" rel="noopener">
+          <div class="build-top">
+            <span class="build-kind">AUDIO TOOL</span>
+            <span class="build-live">LIVE</span>
+          </div>
+          <h3>Sync Studio</h3>
+          <p>Matches tempo across several audio tracks and locks them in sync, ready to cut. Song edits that took an evening now take minutes.</p>
+          <div class="build-stack"><span>JS</span><span>Web Audio</span></div>
+          <span class="build-go">Open the tool &#8599;</span>
+        </a>
+
+        <a class="build-card glass" href="https://www.indiemovementartproject.com/anyconvert/" target="_blank" rel="noopener">
+          <div class="build-top">
+            <span class="build-kind">FREE TOOL</span>
+            <span class="build-live">LIVE</span>
+          </div>
+          <h3>AnyConvert</h3>
+          <p>Converts and compresses video, audio, images and PDFs right in the browser. Files never leave the device. Also ships as a Mac app.</p>
+          <div class="build-stack"><span>ffmpeg.wasm</span><span>pdf.js</span><span>JS</span></div>
+          <span class="build-go">Open the tool &#8599;</span>
+        </a>
+
+        <div class="build-card glass">
+          <div class="build-top">
+            <span class="build-kind">OPS APP</span>
+            <span class="build-live">IN USE</span>
+          </div>
+          <h3>Attendance</h3>
+          <p>Enrolment, batches, drop-ins and fee tracking with CSV export, synced live across every instructor's phone. Saves about 12 hours of admin a month.</p>
+          <div class="build-stack"><span>Firebase</span><span>JS</span></div>
+          <span class="build-note">Internal tool for iMAP staff.</span>
+        </div>
+
       </div>
     </div>
   </div>
@@ -684,33 +800,58 @@
     A1 · THE JOURNEY
   </div>
   <div class="shot">
-    <h2 class="section-heading center-head">From student to iMAP teammate.</h2>
-    <p class="reel-intro">My path at iMAP Dance Academy, and how it grew into a role that spans content, code, and sound.</p>
+    <h2 class="section-heading center-head">Agency desk to creative technologist.</h2>
+    <p class="reel-intro">Nine years across a content studio, an agency, two education brands and a dance academy. Every role added a skill to the kit.</p>
     <div class="timeline">
       <div class="tl-stage glass">
         <span class="tl-node"></span>
-        <span class="tl-step">01</span>
-        <h3>Student</h3>
-        <p>Joined iMAP as a student, learning the craft from the ground up and getting hooked on the discipline of movement.</p>
+        <span class="tl-step">2017 – 19</span>
+        <h3>Content Lead</h3>
+        <div class="tl-org">Thoughtscoot</div>
+        <p>Led content across formats. Wrote and produced music parodies with creators like BeYouNick and Pankhury Awasthy.</p>
       </div>
       <div class="tl-stage glass">
         <span class="tl-node"></span>
-        <span class="tl-step">02</span>
-        <h3>Volunteer</h3>
-        <p>Stepped up as a volunteer, supporting rehearsals and events and becoming a dependable pair of hands for the team.</p>
+        <span class="tl-step">2019</span>
+        <h3>Sr. Content Executive</h3>
+        <div class="tl-org">Team Pumpkin</div>
+        <p>Daily social for Vision Express, Bajaj Finserv and Hindustan Times, on agency deadlines.</p>
       </div>
       <div class="tl-stage glass">
         <span class="tl-node"></span>
-        <span class="tl-step">03</span>
-        <h3>Team Member</h3>
-        <p>Now on the iMAP team, running content creation and song edits, and building the things the academy needed: their website, and Count Me In, a free tool that lives on it. The same one-person, many-skills approach that runs through this whole site.</p>
+        <span class="tl-step">2020 – 24</span>
+        <h3>Content Creator</h3>
+        <div class="tl-org">Azent Overseas Education</div>
+        <p>All in-house creative across digital, social, print and OOH, from strategy to final cut, as a team of one.</p>
+      </div>
+      <div class="tl-stage glass">
+        <span class="tl-node"></span>
+        <span class="tl-step">2024 – 26</span>
+        <h3>Video Content Producer</h3>
+        <div class="tl-org">ATLAS SkillTech University</div>
+        <p>Owned the video pipeline end to end, about 140 pieces a year, including the Admissions 2026 campaign.</p>
+      </div>
+      <div class="tl-stage glass">
+        <span class="tl-node"></span>
+        <span class="tl-step">2023 – now</span>
+        <h3>Creative Technologist</h3>
+        <div class="tl-org">iMAP Dance Academy</div>
+        <p>Joined as a student, stayed to run brand, content, the website and the tools the academy runs on.</p>
+      </div>
+    </div>
+
+    <div class="brands">
+      <div class="brands-label">BRANDS WORKED ON</div>
+      <div class="brands-list">
+        <span>Amazon Prime Video</span><span>Flipkart</span><span>Wix</span><span>Shopify</span>
+        <span>Sanofi</span><span>Bajaj Finserv</span><span>Hindustan Times</span><span>Vision Express</span>
       </div>
     </div>
 
     <div class="work-row" style="margin-top:48px;">
       <div class="row-head">
         <h3>On the floor</h3>
-        <span class="row-tag">My journey at iMAP</span>
+        <span class="row-tag">Reels from iMAP</span>
         <div class="row-nav"><button class="row-prev" aria-label="Scroll left">&#8249;</button><button class="row-next" aria-label="Scroll right">&#8250;</button></div>
       </div>
       <div class="row-track">
@@ -776,6 +917,7 @@
         <span class="chip">Graphic design</span>
         <span class="chip">AI image & video</span>
         <span class="chip">3D animation</span>
+        <span class="chip">Code-driven animation</span>
       </div>
     </div>
     <div class="track-row glass">
@@ -791,7 +933,9 @@
       <span class="track-label t">T1</span>
       <div class="track-chips">
         <span class="chip">Content writing</span>
-        <span class="chip">Vibe coding</span>
+        <span class="chip">Scripting</span>
+        <span class="chip">Creative coding</span>
+        <span class="chip">Web and app builds</span>
       </div>
     </div>
   </div>
@@ -823,11 +967,12 @@
   <div class="shot">
     <h2 class="section-heading">Skip the agency. Call NAIR.</h2>
     <p class="subhead" style="margin-top:14px;">
-      Send the brief. A reply lands within a day, from the person who does the work.
+      Send the brief or the role. A reply lands within a day, from the person who does the work.
     </p>
     <div class="contact-links">
       <a href="mailto:vibesconnect96@gmail.com" class="btn btn-primary" data-reveal="vibesconnect96@gmail.com" data-copy="vibesconnect96@gmail.com">Email</a>
       <a href="tel:+919819462901" class="btn btn-ghost" data-reveal="+91 98194 62901" data-copy="+919819462901">Call</a>
+      <a href="https://www.instagram.com/pra.shant.hai/" class="btn btn-ghost" target="_blank" rel="noopener">Instagram</a>
     </div>
   </div>
 </section>
