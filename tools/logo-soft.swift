@@ -1,13 +1,15 @@
 // logo-soft: cut a logo off a flat background with soft, anti-aliased edges, and write the two
 // PNGs the site uses on its dark background.
 //
-//   swift tools/logo-soft.swift <in> <out-grey.png> <out-hover.png> [--keep-alpha] [--lo=0.08] [--hi=0.25] [--whiten=L]
+//   swift tools/logo-soft.swift <in> <out-grey.png> <out-hover.png> [--keep-alpha] [--lo=0.08] [--hi=0.25] [--whiten=L] [--dark=tint|white|keep]
 //
 // Background colour is the average of the four image corners. Each pixel's alpha comes from how far
 // its colour sits from that background (between --lo and --hi), and the background share is taken
 // back out of edge pixels so no pale rim survives. --keep-alpha skips keying for logos that already
 // have a transparent background. --whiten=L turns every colour lighter than luminance L pure white
-// in the hover version (cleans the tinted rim a low-res source leaves on white shapes). The result is trimmed tight to the visible pixels.
+// in the hover version (cleans the tinted rim a low-res source leaves on white shapes).
+// --dark picks what dark coloured ink does on hover: tint (default, a light tint of its hue),
+// white (navy wordmarks), or keep (strong reds and the like that already read on black). The result is trimmed tight to the visible pixels.
 //
 // grey  : a light grey for the default state; neutral dark ink becomes a light grey.
 // hover : original colours; neutral dark ink (black, charcoal) turns white, and dark coloured ink
@@ -23,6 +25,7 @@ func opt(_ k: String, _ d: Double) -> Double {
   args.first(where: { $0.hasPrefix("--\(k)=") }).flatMap { Double($0.split(separator: "=")[1]) } ?? d
 }
 let keepAlpha = args.contains("--keep-alpha"), lo = opt("lo", 0.08), hi = opt("hi", 0.25), whiten = opt("whiten", 2)
+let darkMode = args.first(where: { $0.hasPrefix("--dark=") }).map { String($0.dropFirst(7)) } ?? "tint"
 
 guard let src = CGImageSourceCreateWithURL(URL(fileURLWithPath: args[1]) as CFURL, nil),
       let img = CGImageSourceCreateImageAtIndex(src, 0, nil) else { print("cannot read \(args[1])"); exit(1) }
@@ -99,10 +102,12 @@ write(args[2]) { r, g, b in
 }
 write(args[3]) { r, g, b in
   if lum(r, g, b) > whiten { return (1, 1, 1) }
+  if darkMode == "white" && lum(r, g, b) < 0.5 { return (1, 1, 1) }
   let d = darkness(r, g, b)
   if d == 0 { return (r, g, b) }
   // Neutral ink goes white; coloured ink keeps its hue as a light tint.
-  let neutral = max(0, min(1, (0.26 - chroma(r, g, b)) / 0.08))
+  var neutral = max(0, min(1, (0.26 - chroma(r, g, b)) / 0.08))
+  if darkMode == "white" { neutral = 1 } else if darkMode == "keep" && neutral < 1 { return (r, g, b) }
   let mx = max(r, g, b, 0.001)
   let tint = [r, g, b].map { 0.62 + 0.38 * $0 / mx }
   let lift = [0, 1, 2].map { k in tint[k] * (1 - neutral) + 1 * neutral }
