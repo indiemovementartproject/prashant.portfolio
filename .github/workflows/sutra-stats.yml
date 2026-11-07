@@ -1,0 +1,32 @@
+name: Sutra Theory stats
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch followers and reel views
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: node scripts/sutra-stats.mjs
+      - name: Store a refreshed token
+        if: hashFiles('.ig-token-new') != ''
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          if [ -n "$GH_TOKEN" ]; then gh secret set IG_TOKEN < .ig-token-new; else echo "::warning::Instagram issued a new token; add SECRETS_PAT so it can be saved"; fi
+          rm -f .ig-token-new
+      - name: Commit if the numbers changed
+        run: |
+          git config user.name "sutra-stats bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sutra-stats.json
+          git diff --cached --quiet || (git commit -m "Sutra Theory stats" && git push)

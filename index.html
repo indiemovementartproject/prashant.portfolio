@@ -203,19 +203,73 @@
   .span-r2 { grid-row: span 2; }
   .span-c2 { grid-column: span 2; }
 
-  /* Builds */
-  .builds { margin-top: 40px; }
-  .build {
-    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, .7fr) 130px; gap: 12px 28px;
-    align-items: baseline; padding: 24px 0; border-top: 1px solid var(--line);
+  /* Builds: a bento of panels */
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+  .panel {
+    position: relative; overflow: hidden; border-radius: 22px; border: 1px solid var(--line);
+    background: rgba(12,12,12,.82); padding: clamp(22px, 2.4vw, 34px);
+    transition: border-color .3s ease;
   }
-  .build:last-child { border-bottom: 1px solid var(--line); }
-  .build h3 { margin: 0; font-weight: 400; font-style: italic; font-size: clamp(32px, 3.4vw, 48px); letter-spacing: -.02em; line-height: 1; }
-  .build p { margin: 0; font-size: 17px; line-height: 1.5; color: #CFC9BF; }
-  .build .tech { color: var(--muted); }
-  .build .go { justify-self: end; color: var(--accent); white-space: nowrap; }
-  .build a.go:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .build .go.soon { color: var(--muted); }
+  .panel h3 { margin: 0; font-weight: 400; font-style: italic; font-size: clamp(32px, 3.2vw, 46px); letter-spacing: -.02em; line-height: 1; }
+  .panel p { margin: 0; font-size: 16.5px; line-height: 1.55; color: #CFC9BF; }
+  .panel .tech { color: var(--muted); }
+  .panel .go { color: var(--accent); white-space: nowrap; }
+
+  .sutra {
+    grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 3vw, 44px); align-items: center;
+    --gold: #E9B44C;
+    background: radial-gradient(90% 120% at 0% 0%, rgba(233,180,76,.13), transparent 60%), rgba(9,11,26,.86);
+    border-color: rgba(233,180,76,.24);
+  }
+  .sutra:hover { border-color: rgba(233,180,76,.5); }
+  .sutra-info { display: flex; flex-direction: column; gap: 20px; }
+  .sutra .brand { display: flex; align-items: center; gap: 16px; }
+  .sutra .brand img { width: 64px; height: 64px; filter: drop-shadow(0 0 10px rgba(233,180,76,.45)); }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; gap: 8px 32px; margin: 4px 0 0; }
+  .stats div { margin: 0; }
+  .stats dt { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .stats dd { margin: 6px 0 0; font-family: 'Fraunces', serif; font-size: clamp(30px, 3vw, 44px); line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .stats dd small { font-size: 15px; color: var(--muted); font-style: italic; }
+  .status { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--muted); margin-top: -6px; }
+  .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .status.live i { background: #4ADE80; box-shadow: 0 0 0 0 rgba(74,222,128,.6); animation: live 2s ease-out infinite; }
+  @keyframes live { to { box-shadow: 0 0 0 9px rgba(74,222,128,0); } }
+  .sutra .foot { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; justify-content: space-between; }
+  .sutra .go { color: var(--gold); }
+  .sutra a.go:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .reels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .reel { position: relative; aspect-ratio: 9 / 16; border-radius: 14px; overflow: hidden; background: #0a0d1c; border: 1px solid rgba(233,180,76,.16); transition: transform .35s ease, border-color .35s ease; }
+  .reel img, .reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reel video { opacity: 0; transition: opacity .3s ease; }
+  .reel.playing video { opacity: 1; }
+  .reel:hover { transform: translateY(-4px); border-color: rgba(233,180,76,.55); }
+  .reel .views {
+    position: absolute; left: 8px; bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 9px; border-radius: 999px; background: rgba(0,0,0,.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    font-size: 12px; color: #fff;
+  }
+  .reel .views svg { width: 9px; height: 9px; fill: currentColor; }
+  .reel .views b { font-weight: 500; }
+
+  .luma { grid-column: span 5; display: flex; flex-direction: column; gap: 16px; }
+  .luma:hover, .kit:hover { border-color: rgba(92,225,230,.35); }
+  .led { display: block; width: calc(100% + 2px); flex: 1; min-height: 210px; margin-bottom: 6px; border-radius: 14px; background: #050505; }
+
+  .kit { grid-column: span 7; display: flex; flex-direction: column; gap: 14px; }
+  .kit .lede { color: var(--muted); font-size: 15.5px; }
+  .tools { display: grid; gap: 10px; margin-top: 6px; }
+  .tool {
+    display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 18px; align-items: center;
+    padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(242,238,232,.08); background: rgba(255,255,255,.025);
+    transition: background .25s ease, border-color .25s ease;
+  }
+  .tool:hover { background: rgba(92,225,230,.06); border-color: rgba(92,225,230,.35); }
+  .tool .ico { width: 56px; height: 56px; border-radius: 14px; }
+  .tool .tx { display: flex; flex-direction: column; gap: 4px; }
+  .tool .nm { font-family: 'Fraunces', serif; font-style: italic; font-size: 22px; line-height: 1.1; }
+  .tool .ds { font-size: 14.5px; line-height: 1.5; color: #CFC9BF; }
+  .tool .tech { font-size: 11px; margin-top: 2px; }
+  .tool .go { align-self: start; font-size: 12px; padding-top: 4px; }
 
   /* Journey */
   .sub { margin: 40px 0 0; }
@@ -298,9 +352,8 @@
 
   @media (max-width: 1000px) {
     .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .build { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
-    .build .tech { grid-column: 1; }
-    .build .go { grid-column: 2; }
+    .sutra { grid-template-columns: minmax(0, 1fr); }
+    .luma, .kit { grid-column: 1 / -1; }
     .contact-in { grid-template-columns: minmax(0, 1fr); }
     .intro { grid-template-columns: minmax(0, 1fr); }
     .portrait { order: -1; --ph: clamp(340px, 88vw, 560px); justify-self: center; margin: 0; }
@@ -314,8 +367,12 @@
     .tile .kind { white-space: normal; font-size: 11px; }
     .roles { grid-template-columns: minmax(0, 1fr); }
     .role { min-height: 150px; }
-    .build { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 20px 0; }
-    .build .tech, .build .go { grid-column: 1; justify-self: start; }
+    .bento { gap: 12px; }
+    .reels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats { gap: 8px 22px; }
+    .tool { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; padding: 14px; }
+    .tool .ico { width: 48px; height: 48px; }
+    .tool .go { display: none; }
     .set { gap: 44px; padding-right: 44px; }
     .brand .duo img { height: calc(30px * var(--s, 1)); }
     .next { height: 46px; padding: 0 16px; font-size: 12px; }
@@ -441,42 +498,64 @@
 <section class="block" id="builds" aria-labelledby="builds-title">
   <p class="mono eyebrow">Software I've built</p>
   <h2 class="title" id="builds-title">Builds</h2>
-  <div class="builds">
-    <article class="build">
+  <div class="bento">
+    <article class="panel sutra">
+      <div class="sutra-info">
+        <div class="brand"><img src="media/sutra/logo.svg" alt="" width="64" height="64"><h3>Sutra Theory</h3></div>
+        <p>An Instagram channel on ancient Indian texts and modern science, made by a reel engine I built. A script goes in; a finished explainer comes out, with paintings, narration and word-synced captions, all from code.</p>
+        <dl class="stats">
+          <div><dt class="mono">Followers</dt><dd data-followers>4,830</dd></div>
+          <div><dt class="mono">Top reel views</dt><dd data-views="DeuFAeUt_FE">213K</dd></div>
+          <div><dt class="mono">Reels posted</dt><dd data-posts>31</dd></div>
+        </dl>
+        <p class="mono status"><i></i><span data-status>Updated 8 Nov 2026</span></p>
+        <div class="foot"><span class="mono tech">Remotion · ElevenLabs</span><a class="mono go" href="https://www.instagram.com/sutra.theory/" target="_blank" rel="noopener">@sutra.theory ↗</a></div>
+      </div>
+      <div class="reels">
+        <a class="reel" href="https://www.instagram.com/reel/DeuFAeUt_FE/" target="_blank" rel="noopener" data-preview="media/sutra/ep001-purnam.mp4" aria-label="Ep 001, Pūrṇam: infinity minus infinity, on Instagram">
+          <img src="media/sutra/ep001-purnam.jpg" alt="" loading="lazy">
+          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DeuFAeUt_FE">213K</b></span>
+        </a>
+        <a class="reel" href="https://www.instagram.com/reel/DezAjL0MTtS/" target="_blank" rel="noopener" data-preview="media/sutra/ep016-panini.mp4" aria-label="Ep 016, Pāṇini: Sanskrit and computers, on Instagram">
+          <img src="media/sutra/ep016-panini.jpg" alt="" loading="lazy">
+          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DezAjL0MTtS">7.2K</b></span>
+        </a>
+        <a class="reel" href="https://www.instagram.com/reel/Dewyx0ssf7X/" target="_blank" rel="noopener" data-preview="media/sutra/ep013-aryabhata.mp4" aria-label="Ep 013, Āryabhaṭa: the Earth spins, on Instagram">
+          <img src="media/sutra/ep013-aryabhata.jpg" alt="" loading="lazy">
+          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="Dewyx0ssf7X">6.5K</b></span>
+        </a>
+        <a class="reel" href="https://www.instagram.com/reel/DevrphVsHrv/" target="_blank" rel="noopener" data-preview="media/sutra/ep011-nasadiya.mp4" aria-label="Ep 011, Nāsadīya: who really knows?, on Instagram">
+          <img src="media/sutra/ep011-nasadiya.jpg" alt="" loading="lazy">
+          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DevrphVsHrv">5.3K</b></span>
+        </a>
+      </div>
+    </article>
+    <article class="panel luma">
+      <canvas class="led" aria-hidden="true"></canvas>
       <h3>Luma</h3>
       <p>Makes the LED-wall backdrop for dance performances. It studies the song and the routine before the show, so every beat and hit on stage gets a matching visual behind the dancers, with zero lag.</p>
       <span class="mono tech">Swift · Metal · DSP</span>
-      <span></span>
     </article>
-    <article class="build">
-      <h3>Sutra Theory</h3>
-      <p>A reel engine. A script goes in; a finished explainer comes out, with animation, narration and word-synced captions, all from code.</p>
-      <span class="mono tech">Remotion · ElevenLabs</span>
-      <a class="mono go" href="https://www.instagram.com/sutra.theory/" target="_blank" rel="noopener">Instagram ↗</a>
-    </article>
-    <article class="build">
-      <h3>Kukar</h3>
-      <p>A spin-the-wheel meal planner for Android, in 13 Indian languages.</p>
-      <span class="mono tech">Android · Preact</span>
-      <span class="mono go soon">Google Play, soon</span>
-    </article>
-    <article class="build">
-      <h3>Count Me In</h3>
-      <p>An iMAP tool that adds a spoken or clicked 5, 6, 7, 8 to the start of any song, so a whole crew comes in on the same beat in rehearsal and on stage. It finds the first beat for you.</p>
-      <span class="mono tech">Web Audio · in the browser</span>
-      <a class="mono go" href="https://www.indiemovementartproject.com/count-me-in" target="_blank" rel="noopener">Open ↗</a>
-    </article>
-    <article class="build">
-      <h3>Sync Studio</h3>
-      <p>An iMAP tool that brings several songs to one tempo without changing their pitch, for stitching a performance medley or practising a routine at one steady speed.</p>
-      <span class="mono tech">Web Audio · in the browser</span>
-      <a class="mono go" href="https://www.indiemovementartproject.com/sync-studio" target="_blank" rel="noopener">Open ↗</a>
-    </article>
-    <article class="build">
-      <h3>AnyConvert</h3>
-      <p>An iMAP tool that converts and compresses video, audio, images, PDFs and Office files, like pulling the MP3 out of a dance video or shrinking a clip to fit WhatsApp. Files never leave the device.</p>
-      <span class="mono tech">ffmpeg.wasm · pdf.js</span>
-      <a class="mono go" href="https://www.indiemovementartproject.com/anyconvert/" target="_blank" rel="noopener">Open ↗</a>
+    <article class="panel kit">
+      <h3>iMAP toolkit</h3>
+      <p class="lede">Free browser tools I built for the iMAP dance community. Nothing to install, and files never leave the device.</p>
+      <div class="tools">
+        <a class="tool" href="https://www.indiemovementartproject.com/count-me-in" target="_blank" rel="noopener">
+          <img class="ico" src="media/tools/count-me-in.svg" alt="" width="56" height="56">
+          <span class="tx"><span class="nm">Count Me In</span><span class="ds">Adds a spoken or clicked 5, 6, 7, 8 to the start of any song, so a whole crew comes in on the same beat in rehearsal and on stage. It finds the first beat for you.</span><span class="mono tech">Web Audio</span></span>
+          <span class="mono go">Open ↗</span>
+        </a>
+        <a class="tool" href="https://www.indiemovementartproject.com/sync-studio" target="_blank" rel="noopener">
+          <img class="ico" src="media/tools/sync-studio.svg" alt="" width="56" height="56">
+          <span class="tx"><span class="nm">Sync Studio</span><span class="ds">Brings several songs to one tempo without changing their pitch, for stitching a performance medley or practising a routine at one steady speed.</span><span class="mono tech">Web Audio</span></span>
+          <span class="mono go">Open ↗</span>
+        </a>
+        <a class="tool" href="https://www.indiemovementartproject.com/anyconvert/" target="_blank" rel="noopener">
+          <img class="ico" src="media/tools/anyconvert.svg" alt="" width="56" height="56">
+          <span class="tx"><span class="nm">AnyConvert</span><span class="ds">Converts and compresses video, audio, images, PDFs and Office files, like pulling the MP3 out of a dance video or shrinking a clip to fit WhatsApp.</span><span class="mono tech">ffmpeg.wasm · pdf.js</span></span>
+          <span class="mono go">Open ↗</span>
+        </a>
+      </div>
     </article>
   </div>
 </section>
@@ -777,6 +856,80 @@
   closeBtn.addEventListener('click', close);
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
+
+  // Builds: Sutra Theory numbers come from sutra-stats.json, refreshed by a scheduled GitHub Action.
+  (function () {
+    const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e4 ? Math.round(n / 1e3) + 'K' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'K' : String(n);
+    fetch('sutra-stats.json', { cache: 'no-cache' }).then(r => r.json()).then(st => {
+      document.querySelectorAll('[data-followers]').forEach(el => el.textContent = st.followers.toLocaleString('en-IN'));
+      if (st.posts) document.querySelectorAll('[data-posts]').forEach(el => el.textContent = st.posts);
+      document.querySelectorAll('[data-views]').forEach(el => { const v = st.reels[el.dataset.views]; if (v) el.textContent = fmt(v); });
+      const age = Date.now() - new Date(st.updated).getTime();
+      const status = document.querySelector('[data-status]');
+      if (st.source === 'instagram' && age < 26 * 3600e3) {
+        status.textContent = 'Live from Instagram';
+        status.parentElement.classList.add('live');
+      } else {
+        status.textContent = 'Updated ' + new Date(st.updated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+    }).catch(() => {});
+  })();
+
+  // Reel covers play a short silent preview on hover.
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduced) {
+    document.querySelectorAll('.reel[data-preview]').forEach(a => {
+      let v = null;
+      a.addEventListener('mouseenter', () => {
+        if (!v) { v = document.createElement('video'); v.src = a.dataset.preview; v.muted = true; v.loop = true; v.playsInline = true; a.insertBefore(v, a.querySelector('.views')); v.addEventListener('playing', () => a.classList.add('playing')); }
+        v.currentTime = 0; v.play().catch(() => {});
+      });
+      a.addEventListener('mouseleave', () => { a.classList.remove('playing'); if (v) v.pause(); });
+    });
+  }
+
+  // Luma: a small LED wall running a looped show at 120 BPM, one look per bar.
+  (function () {
+    const cv = document.querySelector('.led'); if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const COLS = 32, ROWS = 12, BEAT = 0.5;
+    const pal = [[92,225,230], [255,79,216], [233,180,76], [140,160,255]];
+    let w = 0, h = 0, dpr = 1, running = false, t0 = performance.now();
+    function size() {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      w = cv.clientWidth; h = cv.clientHeight;
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    }
+    function level(look, x, y, b, ph) {
+      // x, y in 0..1; b = beat index inside the bar; ph = 0..1 phase inside the beat
+      const decay = Math.exp(-ph * 4);
+      if (look === 0) { const d = Math.hypot((x - .5) * 2.4, (y - .5)); return Math.max(0, 1 - Math.abs(d - ph * 1.4) * 6) * (0.6 + 0.4 * decay); }
+      if (look === 1) { const c = (b + ph) / 4; return Math.max(0, 1 - Math.abs(x - c) * 9); }
+      if (look === 2) { const on = ((Math.floor(x * COLS / 4) + Math.floor(y * ROWS / 3) + b) % 2) === 0; return on ? decay : 0; }
+      const wv = Math.sin((x * 6 + y * 3) - (b + ph) * Math.PI); return Math.max(0, wv) * (0.5 + 0.5 * decay);
+    }
+    function draw(now) {
+      if (!running) return;
+      const t = (now - t0) / 1000;
+      const beat = t / BEAT, bar = Math.floor(beat / 4), b = Math.floor(beat) % 4, ph = beat % 1;
+      const look = bar % 4, c = pal[bar % pal.length];
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h);
+      const gx = w / COLS, gy = h / ROWS, r = Math.min(gx, gy) * 0.32;
+      for (let j = 0; j < ROWS; j++) for (let i = 0; i < COLS; i++) {
+        const x = (i + .5) / COLS, y = (j + .5) / ROWS;
+        const L = 0.07 + 0.93 * Math.min(1, level(look, x, y, b, ph));
+        ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${L.toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(i * gx + gx / 2, j * gy + gy / 2, r, 0, Math.PI * 2); ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    size(); window.addEventListener('resize', size);
+    if (reduced) { running = true; draw(t0 + 1000 * BEAT * 0.15); running = false; return; }
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && !running) { running = true; requestAnimationFrame(draw); }
+      else if (!e.isIntersecting) running = false;
+    })).observe(cv);
+  })();
 })();
 </script>
 </body>
