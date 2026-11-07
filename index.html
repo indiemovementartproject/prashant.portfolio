@@ -57,7 +57,8 @@
      pin with the hero and then scroll away with it (script below). */
   .mask {
     position: fixed; inset: 0; z-index: 1;
-    background: var(--outside); mix-blend-mode: multiply; pointer-events: none; overflow: hidden;
+    background: radial-gradient(circle 300px at var(--mx, -999px) var(--my, -999px), rgba(255,255,255,var(--ma, 0)), transparent 100%), var(--outside);
+    mix-blend-mode: multiply; pointer-events: none; overflow: hidden;
   }
   .mask h1 {
     position: absolute; left: 0; right: 0; top: 0; margin: 0; text-align: center;
@@ -184,6 +185,21 @@
   .tile .kind { color: var(--muted); white-space: nowrap; }
   .tile .new { color: var(--accent); }
   .span-r3 { grid-row: span 3; }
+  .wall { position: relative; }
+  .tile video.hover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .25s ease; }
+  .tile.playing video.hover { opacity: 1; }
+  .tile .cap { transition: opacity .25s ease, transform .25s ease; }
+  .tile.playing .cap { opacity: 0; transform: translateY(8px); }
+  .vol {
+    position: absolute; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35);
+    background: rgba(0,0,0,.55); color: #fff; display: grid; place-items: center; cursor: pointer; padding: 0;
+  }
+  .vol[hidden] { display: none; }
+  .vol svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .vol .on path:first-child, .vol .off path:first-child { fill: currentColor; }
+  .vol .off { display: none; }
+  .vol.muted .on { display: none; }
+  .vol.muted .off { display: block; }
   .span-r2 { grid-row: span 2; }
   .span-c2 { grid-column: span 2; }
 
@@ -292,6 +308,8 @@
   @media (max-width: 700px) {
     .bar nav a.link { display: none; }
     .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; }
+    .wall .span-r3 { grid-row: span 2; }
+    .wall .m-c2 { grid-column: span 2; }
     .tile .cap { padding: 10px 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
     .tile .kind { white-space: normal; font-size: 11px; }
     .roles { grid-template-columns: minmax(0, 1fr); }
@@ -385,37 +403,37 @@
       <img src="media/thumbs/stillwave.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">Stillwave</span><span class="mono new">AI spec ad</span></span>
     </button>
-    <button class="tile span-r2" data-yt="xBgRxrctS1g" aria-label="Play Koine, sci-fi concept trailer">
+    <button class="tile span-r2" data-video="media/koine.mp4" data-poster="media/koine-poster.jpg" data-wide="1" aria-label="Play Koine, sci-fi concept trailer">
       <img src="media/thumbs/koine.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name"><em>Koine</em></span><span class="mono kind">Sci-fi trailer</span></span>
     </button>
-    <button class="tile" data-yt="qlcdK3Umk6M" aria-label="Play ATLAS SkillTech University, AI ad">
+    <button class="tile" data-video="media/atlas.mp4" data-poster="media/atlas-poster.jpg" data-wide="1" aria-label="Play ATLAS SkillTech University, AI ad">
       <img src="media/thumbs/atlas.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">ATLAS SkillTech University</span><span class="mono kind">AI ad</span></span>
     </button>
-    <button class="tile span-r2 span-c2" data-yt="24-otkT_Bpc" aria-label="Play Aam Panna and Co., AI brand ad">
+    <button class="tile span-r2 span-c2" data-video="media/aampanna.mp4" data-poster="media/aampanna-poster.jpg" data-wide="1" aria-label="Play Aam Panna and Co., AI brand ad">
       <img src="media/thumbs/aampanna.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">Aam Panna &amp; Co.</span><span class="mono kind">AI brand ad</span></span>
     </button>
-    <a class="tile span-c2" href="https://www.indiemovementartproject.com/" target="_blank" rel="noopener" aria-label="Visit the iMAP website">
+    <a class="tile span-r2 span-c2" href="https://www.indiemovementartproject.com/" target="_blank" rel="noopener" aria-label="Visit the iMAP website">
       <img src="media/thumbs/imap-site.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">iMAP website</span><span class="mono kind">Web ↗</span></span>
     </a>
-    <button class="tile" data-yt="mdJXoJ18fqM" aria-label="Play Azent Overseas Education ad">
-      <img src="media/thumbs/azent.jpg" alt="" loading="lazy">
-      <span class="cap"><span class="name">Azent</span><span class="mono kind">Ad</span></span>
-    </button>
-    <a class="tile" href="https://fractioncrew-blip.github.io/fraction-portfolio/" target="_blank" rel="noopener" aria-label="Visit the Fraction portfolio site">
-      <img src="media/thumbs/fraction-site.jpg" alt="" loading="lazy">
-      <span class="cap"><span class="name">Fraction</span><span class="mono kind">Portfolio site ↗</span></span>
-    </a>
-    <div class="tile logo span-c2" role="img" aria-label="Kukar, Android app">
-      <img src="media/thumbs/kukar-logo-dark.png" alt="" loading="lazy">
-      <span class="cap"><span class="name">Kukar</span><span class="mono kind">Android app</span></span>
-    </div>
     <button class="tile span-c2" data-video="media/punarsutra-reel.mp4" data-poster="media/punarsutra-poster.jpg" aria-label="Play PunarSutra and Project HARMONY, documentary reel">
       <img src="media/punarsutra-thumb.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">PunarSutra × Project HARMONY</span><span class="mono kind">Documentary reel</span></span>
+    </button>
+    <button class="tile" data-video="media/azent.mp4" data-poster="media/azent-poster.jpg" data-wide="1" aria-label="Play Azent Overseas Education ad">
+      <img src="media/thumbs/azent.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Azent</span><span class="mono kind">Ad</span></span>
+    </button>
+    <a class="tile m-c2" href="https://www.teamfraction.in" target="_blank" rel="noopener" aria-label="Visit the Fraction portfolio site">
+      <img src="media/thumbs/fraction-site.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Fraction</span><span class="mono kind">Portfolio site ↗</span></span>
+    </a>
+    <button class="vol" type="button" aria-label="Mute videos" aria-pressed="false" hidden>
+      <svg class="on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 7a7 7 0 0 1 0 10"/></svg>
+      <svg class="off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></svg>
     </button>
   </div>
 </section>
@@ -426,7 +444,7 @@
   <div class="builds">
     <article class="build">
       <h3>Luma</h3>
-      <p>A visual engine for LED stage walls. It reads a track's structure ahead of time, so the visuals land on the beat with zero lag.</p>
+      <p>Makes the LED-wall backdrop for dance performances. It studies the song and the routine before the show, so every beat and hit on stage gets a matching visual behind the dancers, with zero lag.</p>
       <span class="mono tech">Swift · Metal · DSP</span>
       <span></span>
     </article>
@@ -437,20 +455,26 @@
       <a class="mono go" href="https://www.instagram.com/sutra.theory/" target="_blank" rel="noopener">Instagram ↗</a>
     </article>
     <article class="build">
-      <h3>Manager</h3>
-      <p>A personal assistant for iPhone that plans the week around projects and deadlines, with Claude built in.</p>
-      <span class="mono tech">SwiftUI · EventKit · Claude</span>
-      <span></span>
-    </article>
-    <article class="build">
       <h3>Kukar</h3>
       <p>A spin-the-wheel meal planner for Android, in 13 Indian languages.</p>
       <span class="mono tech">Android · Preact</span>
       <span class="mono go soon">Google Play, soon</span>
     </article>
     <article class="build">
+      <h3>Count Me In</h3>
+      <p>An iMAP tool that adds a spoken or clicked 5, 6, 7, 8 to the start of any song, so a whole crew comes in on the same beat in rehearsal and on stage. It finds the first beat for you.</p>
+      <span class="mono tech">Web Audio · in the browser</span>
+      <a class="mono go" href="https://www.indiemovementartproject.com/count-me-in" target="_blank" rel="noopener">Open ↗</a>
+    </article>
+    <article class="build">
+      <h3>Sync Studio</h3>
+      <p>An iMAP tool that brings several songs to one tempo without changing their pitch, for stitching a performance medley or practising a routine at one steady speed.</p>
+      <span class="mono tech">Web Audio · in the browser</span>
+      <a class="mono go" href="https://www.indiemovementartproject.com/sync-studio" target="_blank" rel="noopener">Open ↗</a>
+    </article>
+    <article class="build">
       <h3>AnyConvert</h3>
-      <p>Converts and compresses video, audio, images and PDFs right in the browser. Files never leave the device.</p>
+      <p>An iMAP tool that converts and compresses video, audio, images, PDFs and Office files, like pulling the MP3 out of a dance video or shrinking a clip to fit WhatsApp. Files never leave the device.</p>
       <span class="mono tech">ffmpeg.wasm · pdf.js</span>
       <a class="mono go" href="https://www.indiemovementartproject.com/anyconvert/" target="_blank" rel="noopener">Open ↗</a>
     </article>
@@ -514,7 +538,7 @@
   <div class="lb-frame"></div>
 </div>
 
-<script src="hero.js"></script>
+<script src="hero.js?v=4"></script>
 <script>
 (function () {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -668,8 +692,9 @@
     if (tile.dataset.video) {
       const v = document.createElement('video');
       v.src = tile.dataset.video; v.poster = tile.dataset.poster || '';
-      v.controls = true; v.autoplay = true; v.playsInline = true;
-      frame.classList.add('vertical');
+      v.controls = true; v.autoplay = true; v.playsInline = true; v.muted = sound.muted;
+      v.addEventListener('volumechange', () => sound.set(v.muted));
+      if (!tile.dataset.wide) frame.classList.add('vertical');
       frame.appendChild(v);
       const p = v.play(); if (p && p.catch) p.catch(() => {});
     } else {
@@ -690,7 +715,65 @@
     body.style.overflow = '';
     if (opener) opener.focus();
   }
-  document.querySelectorAll('.tile[data-yt], .tile[data-video]').forEach(t => t.addEventListener('click', () => open(t)));
+  document.querySelectorAll('.tile[data-yt], .tile[data-video]').forEach(t => t.addEventListener('click', () => { stopHover(); open(t); }));
+
+  // Hover playback: on a desktop pointer, a film starts inside its tile and the caption steps aside.
+  // Sound follows one shared setting, toggled by the button on the playing tile. Browsers only allow
+  // sound after the visitor's first click or key press, so until then a film starts muted.
+  const volBtn = document.querySelector('.wall .vol');
+  const sound = {
+    muted: (() => { try { return localStorage.getItem('nair-muted') === '1'; } catch (e) { return false; } })(),
+    set(m) {
+      this.muted = m;
+      try { localStorage.setItem('nair-muted', m ? '1' : '0'); } catch (e) {}
+      if (hoverVid) hoverVid.muted = m;
+      paintVol();
+    },
+  };
+  let hoverTile = null, hoverVid = null;
+  function paintVol() {
+    const m = !hoverVid || hoverVid.muted;
+    volBtn.classList.toggle('muted', m);
+    volBtn.setAttribute('aria-pressed', String(m));
+    volBtn.setAttribute('aria-label', m ? 'Turn sound on' : 'Mute videos');
+  }
+  function placeVol(tile) {
+    volBtn.style.left = (tile.offsetLeft + tile.offsetWidth - 52) + 'px';
+    volBtn.style.top = (tile.offsetTop + 12) + 'px';
+  }
+  function startHover(tile) {
+    if (hoverTile === tile) return;
+    stopHover();
+    hoverTile = tile;
+    const v = document.createElement('video');
+    v.className = 'hover'; v.src = tile.dataset.video; v.loop = true; v.playsInline = true; v.preload = 'auto';
+    v.muted = sound.muted;
+    hoverVid = v;
+    tile.insertBefore(v, tile.querySelector('.cap'));
+    v.addEventListener('playing', () => { if (hoverVid === v) tile.classList.add('playing'); });
+    const p = v.play();
+    if (p && p.catch) p.catch(() => { if (hoverVid !== v) return; v.muted = true; paintVol(); v.play().catch(() => {}); });
+    placeVol(tile); paintVol(); volBtn.hidden = false;
+  }
+  function stopHover() {
+    if (!hoverTile) return;
+    hoverTile.classList.remove('playing');
+    if (hoverVid) { hoverVid.pause(); hoverVid.removeAttribute('src'); hoverVid.load(); hoverVid.remove(); }
+    hoverTile = null; hoverVid = null; volBtn.hidden = true;
+  }
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduced) {
+    document.querySelectorAll('.wall .tile[data-video]').forEach(t => {
+      t.addEventListener('mouseenter', () => startHover(t));
+      t.addEventListener('mouseleave', e => { if (e.relatedTarget !== volBtn) stopHover(); });
+    });
+    volBtn.addEventListener('mouseleave', e => { if (!hoverTile || !hoverTile.contains(e.relatedTarget)) stopHover(); });
+    volBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const m = !(hoverVid ? hoverVid.muted : sound.muted);
+      sound.set(m);
+      if (hoverVid && !m) hoverVid.play().catch(() => {});
+    });
+  }
   closeBtn.addEventListener('click', close);
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });

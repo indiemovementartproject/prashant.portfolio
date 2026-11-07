@@ -32,8 +32,8 @@ void main(){
   vec2 p = (gl_FragCoord.xy - 0.5*u_res) / u_res.y * 1.5;
   vec2 m = (u_mouse - 0.5*u_res) / u_res.y * 1.5;
   vec2 d = p - m;
-  float fall = exp(-dot(d, d) * 7.0) * u_stir;
-  float ang = fall * 1.5;
+  float fall = exp(-dot(d, d) * 3.2) * u_stir;
+  float ang = fall * 2.8;
   float cs = cos(ang), sn = sin(ang);
   p = m + mat2(cs, -sn, sn, cs) * d - u_mvel * fall;
   float t = u_time * 0.06;
@@ -46,7 +46,8 @@ void main(){
   col = mix(col, vec3(1.0, 0.86, 0.62), smoothstep(0.82, 1.0, f) * 0.75);
   col = mix(col, vec3(0.20, 0.85, 0.90), g * (1.0 - smoothstep(0.15, 0.55, f)) * 0.8);
   col *= 0.75 + 0.5*smoothstep(0.2, 0.9, length(q));
-  col *= 1.0 + 0.12*fall;
+  col *= 1.0 + 0.55*fall;
+  col += vec3(0.30, 0.10, 0.04) * fall * 0.6;
   col += (hash3(vec3(gl_FragCoord.xy, floor(u_time*24.0))) - 0.5) * 0.035;
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -80,6 +81,7 @@ void main(){
 
   // Cursor stirring, desktop only.
   const mouse = { tx: 0, ty: 0, x: 0, y: 0, vx: 0, vy: 0, stir: 0, seen: false };
+  const root = document.documentElement;
   if (!reduced && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     addEventListener('pointermove', e => {
       if (!mouse.seen) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.seen = true; }
@@ -97,7 +99,11 @@ void main(){
       const dx = mouse.x - px, dy = mouse.y - py;
       mouse.vx = mouse.vx * 0.85 + dx * 0.15;
       mouse.vy = mouse.vy * 0.85 + dy * 0.15;
-      mouse.stir = Math.min(1, mouse.stir * 0.965 + Math.hypot(dx, dy) * 0.006);
+      mouse.stir = Math.min(1, mouse.stir * 0.978 + Math.hypot(dx, dy) * 0.012);
+      // A soft light in the dimming layer follows the cursor, so the Ink visibly answers in every section.
+      root.style.setProperty('--mx', mouse.x.toFixed(1) + 'px');
+      root.style.setProperty('--my', mouse.y.toFixed(1) + 'px');
+      root.style.setProperty('--ma', (0.16 + 0.14 * mouse.stir).toFixed(3));
     }
     const sx = canvas.width / innerWidth, sy = canvas.height / innerHeight;
     const k = 1.5 / canvas.height * 8;
