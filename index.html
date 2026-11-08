@@ -175,7 +175,7 @@
   .tile.lit img { filter: grayscale(0); }
   @media (hover: hover) {
     .tile:hover img, .tile:focus-visible img { filter: grayscale(0); transform: scale(1.03); }
-    .tile.logo:hover img { transform: none; }
+    .tile.logo:hover img, .tile.client:hover img { transform: none; }
   }
   .tile .cap {
     position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 16px; background: rgba(0,0,0,.72);
@@ -186,6 +186,25 @@
   .tile .new { color: var(--accent); }
   .span-r3 { grid-row: span 3; }
   .wall { position: relative; }
+  .tile.client {
+    display: flex; align-items: center; gap: 20px; padding: 22px 26px; cursor: default;
+    background: radial-gradient(80% 140% at 0% 50%, rgba(247,168,27,.14), transparent 65%), rgba(14,14,14,.86);
+  }
+  .tile.client .wheel { position: static; width: 64px; height: 64px; flex: none; filter: none; object-fit: contain; transition: transform .6s ease; }
+  .tile.client .ct { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+  .tile.client .eb { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #F7A81B; }
+  .tile.client .nm { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(22px, 2vw, 30px); line-height: 1.05; }
+  .tile.client .ds { font-size: 14px; line-height: 1.45; color: #CFC9BF; }
+  /* One gold line runs around the Rotary banner and its two reels, so they read as one client's work.
+     Hovering any of the three lights the line and lifts the whole group. */
+  .tile.rotary { transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+  .group-line { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; z-index: 2; transition: transform .35s cubic-bezier(.2,.7,.2,1), filter .35s ease; }
+  .group-line path { fill: none; stroke: rgba(247,168,27,.5); stroke-width: 1.5; transition: stroke .35s ease, stroke-width .35s ease; }
+  .wall.rotary-on .tile.rotary, .wall.rotary-on .group-line { transform: translateY(-6px); }
+  .wall.rotary-on .group-line { filter: drop-shadow(0 0 6px rgba(247,168,27,.75)) drop-shadow(0 0 18px rgba(247,168,27,.35)); }
+  .wall.rotary-on .group-line path { stroke: #F7B733; stroke-width: 2.5; }
+  .wall.rotary-on .tile.rotary img { filter: grayscale(0); }
+  .wall.rotary-on .tile.client .wheel { transform: rotate(60deg); }
   .tile video.hover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .25s ease; }
   .tile.playing video.hover { opacity: 1; }
   .tile .cap { transition: opacity .25s ease, transform .25s ease; }
@@ -257,10 +276,12 @@
 
   .kit { grid-column: span 7; display: flex; flex-direction: column; gap: 14px; }
   .kit .lede { color: var(--muted); font-size: 15.5px; }
-  .tools { display: grid; gap: 10px; margin-top: 6px; }
+  .kit-head { display: flex; align-items: center; gap: 18px; }
+  .kit-head img { height: 44px; width: auto; }
+  .tools { display: grid; grid-auto-rows: 1fr; gap: 12px; margin-top: 6px; flex: 1; }
   .tool {
     display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 18px; align-items: center;
-    padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(242,238,232,.08); background: rgba(255,255,255,.025);
+    padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(242,238,232,.08); background: rgba(255,255,255,.025);
     transition: background .25s ease, border-color .25s ease;
   }
   .tool:hover { background: rgba(92,225,230,.06); border-color: rgba(92,225,230,.35); }
@@ -362,7 +383,10 @@
     .bar nav a.link { display: none; }
     .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; }
     .wall .span-r3 { grid-row: span 2; }
-    .wall .m-c2 { grid-column: span 2; }
+    .wall .tile.m-c1 { grid-column: span 1; grid-row: span 1; }
+    .tile.client { gap: 14px; padding: 14px 16px; }
+    .tile.client .wheel { width: 44px; height: 44px; }
+    .tile.client .ds { display: none; }
     .tile .cap { padding: 10px 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
     .tile .kind { white-space: normal; font-size: 11px; }
     .roles { grid-template-columns: minmax(0, 1fr); }
@@ -460,7 +484,7 @@
       <img src="media/thumbs/stillwave.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">Stillwave</span><span class="mono new">AI spec ad</span></span>
     </button>
-    <button class="tile span-r2" data-video="media/koine.mp4" data-poster="media/koine-poster.jpg" data-wide="1" aria-label="Play Koine, sci-fi concept trailer">
+    <button class="tile" data-video="media/koine.mp4" data-poster="media/koine-poster.jpg" data-wide="1" aria-label="Play Koine, sci-fi concept trailer">
       <img src="media/thumbs/koine.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name"><em>Koine</em></span><span class="mono kind">Sci-fi trailer</span></span>
     </button>
@@ -468,26 +492,35 @@
       <img src="media/thumbs/atlas.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">ATLAS SkillTech University</span><span class="mono kind">AI ad</span></span>
     </button>
-    <button class="tile span-r2 span-c2" data-video="media/aampanna.mp4" data-poster="media/aampanna-poster.jpg" data-wide="1" aria-label="Play Aam Panna and Co., AI brand ad">
-      <img src="media/thumbs/aampanna.jpg" alt="" loading="lazy">
-      <span class="cap"><span class="name">Aam Panna &amp; Co.</span><span class="mono kind">AI brand ad</span></span>
+    <button class="tile" data-video="media/azent.mp4" data-poster="media/azent-poster.jpg" data-wide="1" aria-label="Play Azent Overseas Education ad">
+      <img src="media/thumbs/azent.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Azent</span><span class="mono kind">Ad</span></span>
     </button>
     <a class="tile span-r2 span-c2" href="https://www.indiemovementartproject.com/" target="_blank" rel="noopener" aria-label="Visit the iMAP website">
       <img src="media/thumbs/imap-site.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">iMAP website</span><span class="mono kind">Web ↗</span></span>
     </a>
-    <button class="tile span-c2" data-video="media/punarsutra-reel.mp4" data-poster="media/punarsutra-poster.jpg" aria-label="Play PunarSutra and Project HARMONY, documentary reel">
-      <img src="media/punarsutra-thumb.jpg" alt="" loading="lazy">
+    <a class="tile span-r2 span-c2" href="https://www.teamfraction.in" target="_blank" rel="noopener" aria-label="Visit the Fraction website">
+      <img src="media/thumbs/fraction-site.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Fraction</span><span class="mono kind">Website ↗</span></span>
+    </a>
+    <button class="tile span-r3 rotary" data-video="media/punarsutra-reel.mp4" data-poster="media/punarsutra-poster.jpg" aria-label="Play PunarSutra and Project HARMONY, documentary reel for Rotary Club of Navi Mumbai">
+      <img src="media/thumbs/punarsutra-v.jpg" alt="" loading="lazy">
       <span class="cap"><span class="name">PunarSutra × Project HARMONY</span><span class="mono kind">Documentary reel</span></span>
     </button>
-    <button class="tile" data-video="media/azent.mp4" data-poster="media/azent-poster.jpg" data-wide="1" aria-label="Play Azent Overseas Education ad">
-      <img src="media/thumbs/azent.jpg" alt="" loading="lazy">
-      <span class="cap"><span class="name">Azent</span><span class="mono kind">Ad</span></span>
+    <button class="tile span-r3 rotary" data-video="media/punaravartan-reel.mp4" aria-label="Play Project Punaravartan, explainer reel for Rotary Club of Navi Mumbai">
+      <img src="media/thumbs/punaravartan.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Project Punaravartan</span><span class="mono kind">Explainer reel</span></span>
     </button>
-    <a class="tile m-c2" href="https://www.teamfraction.in" target="_blank" rel="noopener" aria-label="Visit the Fraction portfolio site">
-      <img src="media/thumbs/fraction-site.jpg" alt="" loading="lazy">
-      <span class="cap"><span class="name">Fraction</span><span class="mono kind">Portfolio site ↗</span></span>
-    </a>
+    <button class="tile span-r2 span-c2 m-c1" data-video="media/aampanna.mp4" data-poster="media/aampanna-poster.jpg" data-wide="1" aria-label="Play Aam Panna and Co., AI brand ad">
+      <img src="media/thumbs/aampanna.jpg" alt="" loading="lazy">
+      <span class="cap"><span class="name">Aam Panna &amp; Co.</span><span class="mono kind">AI brand ad</span></span>
+    </button>
+    <div class="tile client span-c2 rotary" role="note">
+      <img class="wheel" src="media/logos/clients/rotary-wheel.png" alt="" width="64" height="64">
+      <span class="ct"><span class="mono eb">Client work</span><span class="nm">Rotary Club of Navi Mumbai</span><span class="ds">Two reels on their community projects: upcycled textiles with Henkel, and Shadu Mati recovered after Visarjan with NMMC.</span></span>
+    </div>
+    <svg class="group-line" aria-hidden="true"><path/></svg>
     <button class="vol" type="button" aria-label="Mute videos" aria-pressed="false" hidden>
       <svg class="on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 7a7 7 0 0 1 0 10"/></svg>
       <svg class="off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></svg>
@@ -537,8 +570,8 @@
       <span class="mono tech">Swift · Metal · DSP</span>
     </article>
     <article class="panel kit">
-      <h3>iMAP toolkit</h3>
-      <p class="lede">Free browser tools I built for the iMAP dance community. Nothing to install, and files never leave the device.</p>
+      <div class="kit-head"><img src="media/logos/v/imap.png" alt="iMAP" width="153" height="48"><h3>Toolkit</h3></div>
+      <p class="lede">Free browser tools I built as part of the website for iMAP - Indie Movement Art Project. Nothing to install, and files never leave the device.</p>
       <div class="tools">
         <a class="tool" href="https://www.indiemovementartproject.com/count-me-in" target="_blank" rel="noopener">
           <img class="ico" src="media/tools/count-me-in.svg" alt="" width="56" height="56">
@@ -719,8 +752,61 @@
   addEventListener('resize', placeMask);
   onScroll(); placeMask();
 
+  // Work wall rows follow the column width, so a three-row tile is exactly 9:16 and the
+  // films in single tiles sit close to 16:9 (on phones the tall tiles span two rows).
+  const wallEl = document.querySelector('.wall');
+  function sizeRows() {
+    const cs = getComputedStyle(wallEl);
+    const cols = cs.gridTemplateColumns.split(' ').length;
+    const gap = parseFloat(cs.rowGap) || 0;
+    const colW = (wallEl.clientWidth - (cols - 1) * gap) / cols;
+    const span = cols > 2 ? 3 : 2;
+    wallEl.style.gridAutoRows = Math.round((colW * 16 / 9 - (span - 1) * gap) / span) + 'px';
+  }
+  sizeRows(); addEventListener('resize', sizeRows);
+
+  // The Rotary outline: the union of the two reels and the banner, traced through the middle of
+  // the grid gaps (an L on desktop, a plain rectangle on phones) with rounded corners.
+  const groupLine = wallEl.querySelector('.group-line');
+  const rotary = [...wallEl.querySelectorAll('.tile.rotary')];
+  function roundedPath(pts, r) {
+    let d = '';
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i], a = pts[(i + pts.length - 1) % pts.length], b = pts[(i + 1) % pts.length];
+      const la = Math.hypot(p[0] - a[0], p[1] - a[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      const ra = Math.min(r, la / 2), rb = Math.min(r, lb / 2);
+      const s0 = [p[0] + (a[0] - p[0]) * ra / la, p[1] + (a[1] - p[1]) * ra / la];
+      const s1 = [p[0] + (b[0] - p[0]) * rb / lb, p[1] + (b[1] - p[1]) * rb / lb];
+      d += (i ? 'L' : 'M') + s0[0].toFixed(1) + ' ' + s0[1].toFixed(1) + 'Q' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ' ' + s1[0].toFixed(1) + ' ' + s1[1].toFixed(1);
+    }
+    return d + 'Z';
+  }
+  function drawGroup() {
+    if (!groupLine || rotary.length < 3) return;
+    const gap = parseFloat(getComputedStyle(wallEl).rowGap) || 8, o = gap / 2;
+    const box = el => ({ l: el.offsetLeft, t: el.offsetTop, r: el.offsetLeft + el.offsetWidth, b: el.offsetTop + el.offsetHeight });
+    const [p1, p2, ban] = rotary.map(box);
+    const v = { l: Math.min(p1.l, p2.l), t: Math.min(p1.t, p2.t), r: Math.max(p1.r, p2.r), b: Math.max(p1.b, p2.b) };
+    let pts;
+    if (ban.l >= v.r) {
+      // banner sits to the right of the reels, level with their bottom edge
+      pts = [[v.l - o, v.t - o], [v.r + o, v.t - o], [v.r + o, ban.t - o], [ban.r + o, ban.t - o], [ban.r + o, Math.max(ban.b, v.b) + o], [v.l - o, Math.max(ban.b, v.b) + o]];
+    } else {
+      const l = Math.min(v.l, ban.l), r = Math.max(v.r, ban.r), t = Math.min(v.t, ban.t), b = Math.max(v.b, ban.b);
+      pts = [[l - o, t - o], [r + o, t - o], [r + o, b + o], [l - o, b + o]];
+    }
+    groupLine.setAttribute('width', wallEl.clientWidth);
+    groupLine.setAttribute('height', wallEl.clientHeight);
+    groupLine.querySelector('path').setAttribute('d', roundedPath(pts, 10));
+  }
+  drawGroup(); addEventListener('resize', drawGroup);
+  rotary.forEach(t => {
+    t.addEventListener('mouseenter', () => wallEl.classList.add('rotary-on'));
+    t.addEventListener('mouseleave', e => { if (!rotary.some(x => x.contains(e.relatedTarget))) wallEl.classList.remove('rotary-on'); });
+  });
+
   // Work wall on touch screens: tiles take turns showing colour, 1.5 s each.
-  const tiles = [...document.querySelectorAll('.wall .tile')];
+  const tiles = [...document.querySelectorAll('.wall .tile:not(.client)')];
   if (matchMedia('(hover: none)').matches && tiles.length) {
     let i = 0, timer = 0;
     const step = () => { tiles.forEach(t => t.classList.remove('lit')); tiles[i % tiles.length].classList.add('lit'); i++; };
