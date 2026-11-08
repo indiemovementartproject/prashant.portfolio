@@ -276,8 +276,10 @@
 
   .kit { grid-column: span 7; display: flex; flex-direction: column; gap: 14px; }
   .kit .lede { color: var(--muted); font-size: 15.5px; }
-  .kit-head { display: flex; align-items: center; gap: 18px; }
-  .kit-head img { height: 44px; width: auto; }
+  .kit-head { display: flex; align-items: center; gap: .32em; font-size: clamp(32px, 3.2vw, 46px); }
+  .kit-head h3 { font-size: 1em; }
+  /* the logo's iMAP letters sit level with the Toolkit capitals */
+  .kit-head img { height: .66em; width: auto; }
   .tools { display: grid; grid-auto-rows: 1fr; gap: 12px; margin-top: 6px; flex: 1; }
   .tool {
     display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 18px; align-items: center;
@@ -575,7 +577,7 @@
       <div class="tools">
         <a class="tool" href="https://www.indiemovementartproject.com/count-me-in" target="_blank" rel="noopener">
           <img class="ico" src="media/tools/count-me-in.svg" alt="" width="56" height="56">
-          <span class="tx"><span class="nm">Count Me In</span><span class="ds">Adds a spoken or clicked 5, 6, 7, 8 to the start of any song, so a whole crew comes in on the same beat in rehearsal and on stage. It finds the first beat for you.</span><span class="mono tech">Web Audio</span></span>
+          <span class="tx"><span class="nm">Count Me In</span><span class="ds">Adds a 5, 6, 7, 8 count of ticks to the start of any song, so a whole crew comes in on the same beat in rehearsal and on stage. It finds the first beat for you.</span><span class="mono tech">Web Audio</span></span>
           <span class="mono go">Open ↗</span>
         </a>
         <a class="tool" href="https://www.indiemovementartproject.com/sync-studio" target="_blank" rel="noopener">
