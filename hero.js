@@ -81,7 +81,8 @@ void main(){
 
   // Cursor stirring, desktop only.
   const mouse = { tx: 0, ty: 0, x: 0, y: 0, vx: 0, vy: 0, stir: 0, seen: false };
-  const root = document.documentElement;
+  // The dimming layer scrolls with the page, so its light is placed in page coordinates.
+  const lightEl = document.querySelector('.mask') || document.documentElement;
   if (!reduced && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     addEventListener('pointermove', e => {
       if (!mouse.seen) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.seen = true; }
@@ -101,9 +102,9 @@ void main(){
       mouse.vy = mouse.vy * 0.85 + dy * 0.15;
       mouse.stir = Math.min(1, mouse.stir * 0.978 + Math.hypot(dx, dy) * 0.012);
       // A soft light in the dimming layer follows the cursor, so the Ink visibly answers in every section.
-      root.style.setProperty('--mx', mouse.x.toFixed(1) + 'px');
-      root.style.setProperty('--my', mouse.y.toFixed(1) + 'px');
-      root.style.setProperty('--ma', (0.16 + 0.14 * mouse.stir).toFixed(3));
+      lightEl.style.setProperty('--mx', mouse.x.toFixed(1) + 'px');
+      lightEl.style.setProperty('--my', (mouse.y + scrollY).toFixed(1) + 'px');
+      lightEl.style.setProperty('--ma', (0.16 + 0.14 * mouse.stir).toFixed(3));
     }
     const sx = canvas.width / innerWidth, sy = canvas.height / innerHeight;
     const k = 1.5 / canvas.height * 8;

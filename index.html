@@ -44,6 +44,7 @@
   * { box-sizing: border-box; }
   html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
   html, body { margin: 0; background: var(--ink); color: var(--text); }
+  body { position: relative; }
   body { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; }
   a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; }
@@ -53,17 +54,17 @@
 
   /* ---------- The Ink: one fixed canvas behind the whole site ---------- */
   #gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
-  /* The dimming sheet never moves, so there is no edge anywhere. The NAIR letters inside it
-     pin with the hero and then scroll away with it (script below). */
+  /* The dimming sheet covers the whole page and scrolls with it natively, so the NAIR window
+     inside it moves in the same frame as the tagline: no script chases the scroll. */
   .mask {
-    position: fixed; inset: 0; z-index: 1;
+    position: absolute; inset: 0; z-index: 1;
     background: radial-gradient(circle 300px at var(--mx, -999px) var(--my, -999px), rgba(255,255,255,var(--ma, 0)), transparent 100%), var(--outside);
     mix-blend-mode: multiply; pointer-events: none; overflow: hidden;
   }
   .mask h1 {
     position: absolute; left: 0; right: 0; top: 0; margin: 0; text-align: center;
     color: #fff; font-family: 'Sunset Script', cursive; font-weight: 400;
-    font-size: var(--nair); line-height: 1; letter-spacing: .01em; will-change: transform;
+    font-size: var(--nair); line-height: 1; letter-spacing: .01em;
   }
   html.no-gl .mask { background: transparent; mix-blend-mode: normal; }
   html.no-gl .mask h1 { color: var(--accent); }
@@ -653,7 +654,7 @@
   <div class="lb-frame"></div>
 </div>
 
-<script src="hero.js?v=4"></script>
+<script src="hero.js?v=5"></script>
 <script>
 (function () {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -729,7 +730,7 @@
   document.querySelectorAll('[data-scroll]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); goTo(a.dataset.scroll); }));
   document.querySelectorAll('.bar a.link').forEach(a => a.addEventListener('click', e => { e.preventDefault(); goTo(a.getAttribute('href').slice(1)); }));
 
-  // The NAIR window pins with the hero, then scrolls away with it, frame for frame.
+  // The NAIR window sits in the page-tall dimming sheet at the hero's position; it scrolls natively.
   const stage = document.querySelector('.stage');
   const hero = document.querySelector('.hero');
   const mask = document.querySelector('.mask');
@@ -762,11 +763,8 @@
     return lay;
   }
   function placeMask() {
-    const h = hero.offsetHeight;
-    const off = Math.max(0, scrollY - (stage.offsetTop + stage.offsetHeight - h));
     const L = layout();
-    word.style.transform = 'translate3d(' + L.dx.toFixed(1) + 'px,' + (L.y - off).toFixed(1) + 'px,0)';
-    word.style.visibility = off > h ? 'hidden' : '';
+    word.style.transform = 'translate(' + L.dx.toFixed(1) + 'px,' + (stage.offsetTop + L.y).toFixed(1) + 'px)';
   }
   if (document.fonts) document.fonts.ready.then(() => { layKey = ''; placeMask(); });
 
@@ -776,7 +774,6 @@
   function onScroll() {
     if (scrollY > 8) body.classList.add('revealed');
     body.classList.toggle('past-hero', scrollY > stage.offsetHeight - 40);
-    placeMask();
   }
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', placeMask);
