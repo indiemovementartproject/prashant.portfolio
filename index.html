@@ -95,13 +95,14 @@
   .pill:hover { background: var(--text); color: #0B0B0B; border-color: var(--text); }
 
   /* ---------- Hero ---------- */
-  .stage { position: relative; height: 150vh; height: 150svh; }
+  .stage { position: relative; height: 100vh; height: 100svh; }
   .hero { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .tagline {
     position: absolute; left: 0; right: 0; margin: 0; padding: 0 20px; text-align: center;
     top: calc(50% + var(--nair) * .5 + 1.4vh);
     font-family: 'Sunset Script', cursive; font-weight: 400; font-size: clamp(18px, 1.8vw, 28px);
     text-shadow: 0 2px 18px rgba(0,0,0,.6);
+    text-wrap: balance;
   }
   .ctas {
     position: absolute; left: 0; right: 0; bottom: 84px; display: flex; justify-content: center; gap: 12px;
@@ -733,18 +734,45 @@
   const hero = document.querySelector('.hero');
   const mask = document.querySelector('.mask');
   const word = mask.querySelector('h1');
+  // Centre the lockup by what the eye sees: the inked strokes of NAIR (measured from the font,
+  // not its em box) plus the tagline under it, as one block in the middle of the screen.
+  const tagline = hero.querySelector('.tagline');
+  const meter = document.createElement('canvas').getContext('2d');
+  let lay = null, layKey = '';
+  function layout() {
+    const h = hero.offsetHeight, cs = getComputedStyle(word);
+    const fs = parseFloat(cs.fontSize), ls = parseFloat(cs.letterSpacing) || 0;
+    const key = [h, innerWidth, fs, document.fonts ? document.fonts.status : ''].join('|');
+    if (key === layKey) return lay;
+    meter.font = fs + 'px "Sunset Script"';
+    const text = word.textContent.trim(), m = meter.measureText(text);
+    // vertical: where the ink sits inside a line box of height fs (line-height: 1)
+    const base = (fs - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
+    const inkTop = base - m.actualBoundingBoxAscent, inkBot = base + m.actualBoundingBoxDescent;
+    // horizontal: the run is centred as a box (with letter-spacing after every glyph); centre the ink instead
+    const runW = m.width + ls * text.length;
+    const inkMid = (-m.actualBoundingBoxLeft + m.actualBoundingBoxRight + ls * (text.length - 1)) / 2;
+    const dx = runW / 2 - inkMid;
+    const gap = Math.max(14, fs * .1 + innerHeight * .012);
+    const tagH = tagline.offsetHeight;
+    const blockTop = h / 2 - (inkBot - inkTop + gap + tagH) / 2;
+    tagline.style.top = Math.round(blockTop + (inkBot - inkTop) + gap) + 'px';
+    lay = { y: blockTop - inkTop, dx };
+    layKey = key;
+    return lay;
+  }
   function placeMask() {
-    // Centre the visible glyphs (not the em box) in the hero, then lift them as the hero leaves.
     const h = hero.offsetHeight;
     const off = Math.max(0, scrollY - (stage.offsetTop + stage.offsetHeight - h));
-    const fs = parseFloat(getComputedStyle(word).fontSize);
-    const y = h / 2 - fs / 2 + fs * .142 - off;
-    word.style.transform = 'translate3d(0,' + y + 'px,0)';
+    const L = layout();
+    word.style.transform = 'translate3d(' + L.dx.toFixed(1) + 'px,' + (L.y - off).toFixed(1) + 'px,0)';
     word.style.visibility = off > h ? 'hidden' : '';
   }
+  if (document.fonts) document.fonts.ready.then(() => { layKey = ''; placeMask(); });
 
-  // First scroll reveals Explore and Enquire; the bar appears once the hero is gone.
+  // Explore and Enquire fade in after a moment (or on the first scroll); the bar appears once the hero is gone.
   // The mask moves in the scroll handler itself, so it never lags the page by a frame.
+  setTimeout(() => body.classList.add('revealed'), reduced ? 0 : 1200);
   function onScroll() {
     if (scrollY > 8) body.classList.add('revealed');
     body.classList.toggle('past-hero', scrollY > stage.offsetHeight - 40);
