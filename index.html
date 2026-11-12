@@ -264,13 +264,6 @@
   .reel video { opacity: 0; transition: opacity .3s ease; }
   .reel.playing video { opacity: 1; }
   .reel:hover { transform: translateY(-4px); border-color: rgba(233,180,76,.55); }
-  .reel .views {
-    position: absolute; left: 8px; bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 9px; border-radius: 999px; background: rgba(0,0,0,.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    font-size: 12px; color: #fff;
-  }
-  .reel .views svg { width: 9px; height: 9px; fill: currentColor; }
-  .reel .views b { font-weight: 500; }
 
   .mya { grid-column: span 5; display: flex; flex-direction: column; gap: 16px; }
   .mya:hover, .kit:hover { border-color: rgba(92,225,230,.35); }
@@ -542,7 +535,6 @@
         <p>An Instagram channel on ancient Indian texts and modern science, made by a reel engine I built. A script goes in; a finished explainer comes out, with paintings, narration and word-synced captions, all from code.</p>
         <dl class="stats">
           <div><dt class="mono">Followers</dt><dd data-followers>4,830</dd></div>
-          <div><dt class="mono">Top reel views</dt><dd data-views="DeuFAeUt_FE">213K</dd></div>
           <div><dt class="mono">Reels posted</dt><dd data-posts>31</dd></div>
         </dl>
         <p class="mono status"><i></i><span data-status>Updated 8 Nov 2026</span></p>
@@ -551,19 +543,15 @@
       <div class="reels">
         <a class="reel" href="https://www.instagram.com/reel/DeuFAeUt_FE/" target="_blank" rel="noopener" data-preview="media/sutra/ep001-purnam.mp4" aria-label="Ep 001, Pūrṇam: infinity minus infinity, on Instagram">
           <img src="media/sutra/ep001-purnam.jpg" alt="" loading="lazy">
-          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DeuFAeUt_FE">213K</b></span>
         </a>
         <a class="reel" href="https://www.instagram.com/reel/DezAjL0MTtS/" target="_blank" rel="noopener" data-preview="media/sutra/ep016-panini.mp4" aria-label="Ep 016, Pāṇini: Sanskrit and computers, on Instagram">
           <img src="media/sutra/ep016-panini.jpg" alt="" loading="lazy">
-          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DezAjL0MTtS">7.2K</b></span>
         </a>
         <a class="reel" href="https://www.instagram.com/reel/Dewyx0ssf7X/" target="_blank" rel="noopener" data-preview="media/sutra/ep013-aryabhata.mp4" aria-label="Ep 013, Āryabhaṭa: the Earth spins, on Instagram">
           <img src="media/sutra/ep013-aryabhata.jpg" alt="" loading="lazy">
-          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="Dewyx0ssf7X">6.5K</b></span>
         </a>
         <a class="reel" href="https://www.instagram.com/reel/DevrphVsHrv/" target="_blank" rel="noopener" data-preview="media/sutra/ep011-nasadiya.mp4" aria-label="Ep 011, Nāsadīya: who really knows?, on Instagram">
           <img src="media/sutra/ep011-nasadiya.jpg" alt="" loading="lazy">
-          <span class="mono views"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><b data-views="DevrphVsHrv">5.3K</b></span>
         </a>
       </div>
     </article>
@@ -981,13 +969,11 @@
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
 
-  // Builds: Sutra Theory numbers come from sutra-stats.json, refreshed by a scheduled GitHub Action.
+  // Builds: the Sutra Theory follower count comes from sutra-stats.json, refreshed by a scheduled GitHub Action.
   (function () {
-    const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e4 ? Math.round(n / 1e3) + 'K' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'K' : String(n);
     fetch('sutra-stats.json', { cache: 'no-cache' }).then(r => r.json()).then(st => {
       document.querySelectorAll('[data-followers]').forEach(el => el.textContent = st.followers.toLocaleString('en-IN'));
       if (st.posts) document.querySelectorAll('[data-posts]').forEach(el => el.textContent = st.posts);
-      document.querySelectorAll('[data-views]').forEach(el => { const v = st.reels[el.dataset.views]; if (v) el.textContent = fmt(v); });
       const age = Date.now() - new Date(st.updated).getTime();
       const status = document.querySelector('[data-status]');
       if (st.source === 'instagram' && age < 26 * 3600e3) {
@@ -1004,7 +990,7 @@
     document.querySelectorAll('.reel[data-preview]').forEach(a => {
       let v = null;
       a.addEventListener('mouseenter', () => {
-        if (!v) { v = document.createElement('video'); v.src = a.dataset.preview; v.muted = true; v.loop = true; v.playsInline = true; a.insertBefore(v, a.querySelector('.views')); v.addEventListener('playing', () => a.classList.add('playing')); }
+        if (!v) { v = document.createElement('video'); v.src = a.dataset.preview; v.muted = true; v.loop = true; v.playsInline = true; a.appendChild(v); v.addEventListener('playing', () => a.classList.add('playing')); }
         v.currentTime = 0; v.play().catch(() => {});
       });
       a.addEventListener('mouseleave', () => { a.classList.remove('playing'); if (v) v.pause(); });
