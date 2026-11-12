@@ -272,9 +272,14 @@
   .reel .views svg { width: 9px; height: 9px; fill: currentColor; }
   .reel .views b { font-weight: 500; }
 
-  .luma { grid-column: span 5; display: flex; flex-direction: column; gap: 16px; }
-  .luma:hover, .kit:hover { border-color: rgba(92,225,230,.35); }
-  .led { display: block; width: calc(100% + 2px); flex: 1; min-height: 210px; margin-bottom: 6px; border-radius: 14px; background: #050505; }
+  .mya { grid-column: span 5; display: flex; flex-direction: column; gap: 16px; }
+  .mya:hover, .kit:hover { border-color: rgba(92,225,230,.35); }
+  .mya-shot { display: block; width: 100%; flex: 1; min-height: 210px; object-fit: cover; object-position: 38% 50%;
+    margin-bottom: 6px; border-radius: 14px; border: 1px solid rgba(242,238,232,.08); background: #050505; }
+  .mya-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; }
+  /* The wordmark is drawn on black; screen blending drops the black into the panel. */
+  .mya-mark { display: block; height: clamp(40px, 3.6vw, 52px); width: auto; mix-blend-mode: screen; }
+  .mya-tag { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(18px, 1.6vw, 22px); color: var(--accent); }
 
   .kit { grid-column: span 7; display: flex; flex-direction: column; gap: 14px; }
   .kit .lede { color: var(--muted); font-size: 15.5px; }
@@ -326,7 +331,7 @@
   .role .logo-row { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 76px; }
 
   /* Brand strip: a steady, seamless marquee (the script measures one set in px) */
-  .brands { margin-top: 64px; }
+  section.block.clients { padding-top: clamp(56px, 7vw, 96px); }
   .strip { position: relative; overflow: hidden; margin-top: 22px;
     -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
             mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
@@ -378,7 +383,7 @@
   @media (max-width: 1000px) {
     .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .sutra { grid-template-columns: minmax(0, 1fr); }
-    .luma, .kit { grid-column: 1 / -1; }
+    .mya, .kit { grid-column: 1 / -1; }
     .contact-in { grid-template-columns: minmax(0, 1fr); }
     .intro { grid-template-columns: minmax(0, 1fr); }
     .portrait { order: -1; --ph: clamp(340px, 88vw, 560px); justify-self: center; margin: 0; }
@@ -434,41 +439,36 @@
     <h1 class="sr">NAIR, Prashant Nair</h1>
     <p class="tagline">When one is all you can hire, better call NAIR.</p>
     <nav class="ctas" aria-label="Start">
-      <a class="pill" href="#explore" data-scroll="explore">Explore</a>
+      <a class="pill" href="#clients" data-scroll="clients">Explore</a>
       <a class="pill" href="https://wa.me/918976333005?text=Hi%20Prashant%2C%20can%20you%20tell%20me%20more%20about%20your%20services%3F" target="_blank" rel="noopener">Enquire</a>
     </nav>
-    <a class="cue" href="#explore" data-scroll="explore" aria-label="Scroll down">
+    <a class="cue" href="#clients" data-scroll="clients" aria-label="Scroll down">
       <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true"><path d="M1 1 L10 10 L19 1" fill="none" stroke="#F2EEE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </a>
   </section>
 </div>
 
 <div class="below">
-<section class="block" id="explore" aria-labelledby="intro-title">
-  <div class="intro">
-    <div>
-    <h2 class="title" id="intro-title">I make the film <em>and</em> the tools behind it.</h2>
-    <div class="side">
-      <p>I am <span class="hl">Prashant Nair</span>, a <span class="hl">Video Content Producer and Creative Technologist</span>. I write, shoot, edit, score and build: Brand Films, AI Content, Websites, Apps and Systems that make your workflow smoother.</p>
-      <p>I specialise in carrying every project from the first line to the final mix.</p>
-    </div>
-    </div>
-    <figure class="portrait">
-      <svg class="orbits back" aria-hidden="true"></svg>
-      <img src="media/portrait.webp" alt="Prashant Nair" width="786" height="1296">
-      <svg class="orbits front" aria-hidden="true"></svg>
-      <div class="orb-icons" aria-hidden="true">
-      <span class="orb-i" data-o="0" data-a="20"><svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="13" height="10" rx="2"/><path d="M15.5 10.5 21.5 7v10l-6-3.5z"/></svg></span>
-      <span class="orb-i" data-o="0" data-a="140"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9M12 3C9.4 5.6 8.2 8.6 8.2 12s1.2 6.4 3.8 9"/></svg></span>
-      <span class="orb-i" data-o="0" data-a="260"><svg viewBox="0 0 24 24"><path d="M9 18V5.5l11-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span>
-      <span class="orb-i" data-o="1" data-a="80"><svg viewBox="0 0 24 24"><path d="M3.5 10.5h17v8.5a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="m3.3 10.4-.9-4.2 16.3-3.6.9 4.2z"/><path d="m7.6 5.4 2.6 3.2M12.6 4.3l2.6 3.2"/></svg></span>
-      <span class="orb-i" data-o="1" data-a="200"><svg viewBox="0 0 24 24"><path d="m11 3.5 1.7 4.8 4.8 1.7-4.8 1.7L11 16.5l-1.7-4.8L4.5 10l4.8-1.7z"/><path d="m18 14.5.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span>
-      <span class="orb-i" data-o="1" data-a="320"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.8 18.2h2.4"/></svg></span>
-      <span class="orb-i" data-o="2" data-a="40"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.8"/><circle cx="6" cy="18" r="2.8"/><path d="M8.1 7.9 20 19.5M8.1 16.1 20 4.5"/></svg></span>
-      <span class="orb-i" data-o="2" data-a="160"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4M8.5 21h7"/></svg></span>
-      <span class="orb-i" data-o="2" data-a="280"><svg viewBox="0 0 24 24"><path d="M13 20.5h8"/><path d="M16.6 3.6a2.1 2.1 0 0 1 3 3L7.2 19l-3.9 1 1-3.9z"/></svg></span>
+<section class="block clients" id="clients" aria-labelledby="brands-title">
+  <div class="brands">
+    <p class="mono eyebrow" id="brands-title">Freelance Clients</p>
+    <div class="strip" id="strip">
+      <div class="belt">
+        <div class="set">
+          <div class="brand"><span class="duo" style="--s:1.35"><img class="g" src="media/logos/v/rotary-grey.png" alt="Rotary Club of Navi Mumbai"><img class="c" src="media/logos/v/rotary.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo" style="--s:1.3"><img class="g" src="media/logos/v/aditya-birla-grey.png" alt="Aditya Birla Capital Health Insurance"><img class="c" src="media/logos/v/aditya-birla.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/prime-video-grey.png" alt="Amazon Prime Video"><img class="c" src="media/logos/v/prime-video.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/flipkart-grey.png" alt="Flipkart"><img class="c" src="media/logos/v/flipkart.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/wix-grey.png" alt="Wix"><img class="c" src="media/logos/v/wix.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/shopify-grey.png" alt="Shopify"><img class="c" src="media/logos/v/shopify.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/sanofi-grey.png" alt="Sanofi"><img class="c" src="media/logos/v/sanofi.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/bajaj-finserv-grey.png" alt="Bajaj Finserv"><img class="c" src="media/logos/v/bajaj-finserv.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/hindustan-times-grey.png" alt="Hindustan Times"><img class="c" src="media/logos/v/hindustan-times.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/vision-express-grey.png" alt="Vision Express"><img class="c" src="media/logos/v/vision-express.png" alt="" aria-hidden="true"></span></div>
+          <div class="brand"><a class="next" href="https://wa.me/918976333005?text=Hi%20Prashant%2C%20can%20you%20tell%20me%20more%20about%20your%20services%3F" target="_blank" rel="noopener">Your brand next?</a></div>
+        </div>
       </div>
-    </figure>
+    </div>
   </div>
 </section>
 
@@ -567,11 +567,14 @@
         </a>
       </div>
     </article>
-    <article class="panel luma">
-      <canvas class="led" aria-hidden="true"></canvas>
-      <h3>Luma</h3>
+    <article class="panel mya">
+      <img class="mya-shot" src="media/mya/app.jpg" alt="MYA at work: a neon tunnel visual, the scene picker, and the song split into beat-synced sections" width="1456" height="773" loading="lazy">
+      <div class="mya-head">
+        <h3><img class="mya-mark" src="media/mya/wordmark.jpg" alt="MYA" width="660" height="300"></h3>
+        <span class="mya-tag">The Magic Behind Movement</span>
+      </div>
       <p>Makes the LED-wall backdrop for dance performances. It studies the song and the routine before the show, so every beat and hit on stage gets a matching visual behind the dancers, with zero lag.</p>
-      <span class="mono tech">Swift · Metal · DSP</span>
+      <span class="mono tech">Electron · Three.js · Python</span>
     </article>
     <article class="panel kit">
       <div class="kit-head"><img src="media/logos/v/imap.png" alt="iMAP" width="153" height="48"><h3>Toolkit</h3></div>
@@ -608,25 +611,33 @@
     <div class="role"><span class="mono when">2019</span><div class="logo-row"><span class="duo" style="--s:.98"><img class="g" src="media/logos/v/team-pumpkin-grey.png" alt="Team Pumpkin"><img class="c" src="media/logos/v/team-pumpkin.png" alt="" aria-hidden="true"></span></div><span class="mono what">Sr. Content Executive</span></div>
     <div class="role"><span class="mono when">2017 – 19</span><div class="logo-row"><span class="duo" style="--s:1.12"><img class="g" src="media/logos/v/thoughtscoot-grey.png" alt="ThoughtScoot"><img class="c" src="media/logos/v/thoughtscoot.png" alt="" aria-hidden="true"></span></div><span class="mono what">Content Lead</span></div>
   </div>
-  <div class="brands" aria-labelledby="brands-title">
-    <p class="mono eyebrow" id="brands-title">Freelance Clients</p>
-    <div class="strip" id="strip">
-      <div class="belt">
-        <div class="set">
-          <div class="brand"><span class="duo" style="--s:1.35"><img class="g" src="media/logos/v/rotary-grey.png" alt="Rotary Club of Navi Mumbai"><img class="c" src="media/logos/v/rotary.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo" style="--s:1.3"><img class="g" src="media/logos/v/aditya-birla-grey.png" alt="Aditya Birla Capital Health Insurance"><img class="c" src="media/logos/v/aditya-birla.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/prime-video-grey.png" alt="Amazon Prime Video"><img class="c" src="media/logos/v/prime-video.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/flipkart-grey.png" alt="Flipkart"><img class="c" src="media/logos/v/flipkart.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/wix-grey.png" alt="Wix"><img class="c" src="media/logos/v/wix.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/shopify-grey.png" alt="Shopify"><img class="c" src="media/logos/v/shopify.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/sanofi-grey.png" alt="Sanofi"><img class="c" src="media/logos/v/sanofi.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/bajaj-finserv-grey.png" alt="Bajaj Finserv"><img class="c" src="media/logos/v/bajaj-finserv.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/hindustan-times-grey.png" alt="Hindustan Times"><img class="c" src="media/logos/v/hindustan-times.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><span class="duo"><img class="g" src="media/logos/v/vision-express-grey.png" alt="Vision Express"><img class="c" src="media/logos/v/vision-express.png" alt="" aria-hidden="true"></span></div>
-          <div class="brand"><a class="next" href="https://wa.me/918976333005?text=Hi%20Prashant%2C%20can%20you%20tell%20me%20more%20about%20your%20services%3F" target="_blank" rel="noopener">Your brand next?</a></div>
-        </div>
-      </div>
+</section>
+
+<section class="block" id="explore" aria-labelledby="intro-title">
+  <div class="intro">
+    <div>
+    <h2 class="title" id="intro-title">I make the film <em>and</em> the tools behind it.</h2>
+    <div class="side">
+      <p>I am <span class="hl">Prashant Nair</span>, a <span class="hl">Video Content Producer and Creative Technologist</span>. I write, shoot, edit, score and build: Brand Films, AI Content, Websites, Apps and Systems that make your workflow smoother.</p>
+      <p>I specialise in carrying every project from the first line to the final mix.</p>
     </div>
+    </div>
+    <figure class="portrait">
+      <svg class="orbits back" aria-hidden="true"></svg>
+      <img src="media/portrait.webp" alt="Prashant Nair" width="786" height="1296">
+      <svg class="orbits front" aria-hidden="true"></svg>
+      <div class="orb-icons" aria-hidden="true">
+      <span class="orb-i" data-o="0" data-a="20"><svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="13" height="10" rx="2"/><path d="M15.5 10.5 21.5 7v10l-6-3.5z"/></svg></span>
+      <span class="orb-i" data-o="0" data-a="140"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9M12 3C9.4 5.6 8.2 8.6 8.2 12s1.2 6.4 3.8 9"/></svg></span>
+      <span class="orb-i" data-o="0" data-a="260"><svg viewBox="0 0 24 24"><path d="M9 18V5.5l11-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></span>
+      <span class="orb-i" data-o="1" data-a="80"><svg viewBox="0 0 24 24"><path d="M3.5 10.5h17v8.5a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="m3.3 10.4-.9-4.2 16.3-3.6.9 4.2z"/><path d="m7.6 5.4 2.6 3.2M12.6 4.3l2.6 3.2"/></svg></span>
+      <span class="orb-i" data-o="1" data-a="200"><svg viewBox="0 0 24 24"><path d="m11 3.5 1.7 4.8 4.8 1.7-4.8 1.7L11 16.5l-1.7-4.8L4.5 10l4.8-1.7z"/><path d="m18 14.5.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span>
+      <span class="orb-i" data-o="1" data-a="320"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.8 18.2h2.4"/></svg></span>
+      <span class="orb-i" data-o="2" data-a="40"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.8"/><circle cx="6" cy="18" r="2.8"/><path d="M8.1 7.9 20 19.5M8.1 16.1 20 4.5"/></svg></span>
+      <span class="orb-i" data-o="2" data-a="160"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4M8.5 21h7"/></svg></span>
+      <span class="orb-i" data-o="2" data-a="280"><svg viewBox="0 0 24 24"><path d="M13 20.5h8"/><path d="M16.6 3.6a2.1 2.1 0 0 1 3 3L7.2 19l-3.9 1 1-3.9z"/></svg></span>
+      </div>
+    </figure>
   </div>
 </section>
 
@@ -722,7 +733,7 @@
 
   function goTo(id) {
     const el = document.getElementById(id);
-    const y = el.getBoundingClientRect().top + scrollY - (id === 'explore' ? 0 : 64);
+    const y = el.getBoundingClientRect().top + scrollY - (id === 'clients' ? 0 : 64);
     scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
     // Smooth scrolling needs animation frames; a hidden tab gets none, so land it anyway.
     setTimeout(() => { if (Math.abs(scrollY - y) > 4) scrollTo(0, y); }, 900);
@@ -1000,49 +1011,6 @@
     });
   }
 
-  // Luma: a small LED wall running a looped show at 120 BPM, one look per bar.
-  (function () {
-    const cv = document.querySelector('.led'); if (!cv) return;
-    const ctx = cv.getContext('2d');
-    const COLS = 32, ROWS = 12, BEAT = 0.5;
-    const pal = [[92,225,230], [255,79,216], [233,180,76], [140,160,255]];
-    let w = 0, h = 0, dpr = 1, running = false, t0 = performance.now();
-    function size() {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
-      w = cv.clientWidth; h = cv.clientHeight;
-      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
-    }
-    function level(look, x, y, b, ph) {
-      // x, y in 0..1; b = beat index inside the bar; ph = 0..1 phase inside the beat
-      const decay = Math.exp(-ph * 4);
-      if (look === 0) { const d = Math.hypot((x - .5) * 2.4, (y - .5)); return Math.max(0, 1 - Math.abs(d - ph * 1.4) * 6) * (0.6 + 0.4 * decay); }
-      if (look === 1) { const c = (b + ph) / 4; return Math.max(0, 1 - Math.abs(x - c) * 9); }
-      if (look === 2) { const on = ((Math.floor(x * COLS / 4) + Math.floor(y * ROWS / 3) + b) % 2) === 0; return on ? decay : 0; }
-      const wv = Math.sin((x * 6 + y * 3) - (b + ph) * Math.PI); return Math.max(0, wv) * (0.5 + 0.5 * decay);
-    }
-    function draw(now) {
-      if (!running) return;
-      const t = (now - t0) / 1000;
-      const beat = t / BEAT, bar = Math.floor(beat / 4), b = Math.floor(beat) % 4, ph = beat % 1;
-      const look = bar % 4, c = pal[bar % pal.length];
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h);
-      const gx = w / COLS, gy = h / ROWS, r = Math.min(gx, gy) * 0.32;
-      for (let j = 0; j < ROWS; j++) for (let i = 0; i < COLS; i++) {
-        const x = (i + .5) / COLS, y = (j + .5) / ROWS;
-        const L = 0.07 + 0.93 * Math.min(1, level(look, x, y, b, ph));
-        ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${L.toFixed(3)})`;
-        ctx.beginPath(); ctx.arc(i * gx + gx / 2, j * gy + gy / 2, r, 0, Math.PI * 2); ctx.fill();
-      }
-      requestAnimationFrame(draw);
-    }
-    size(); window.addEventListener('resize', size);
-    if (reduced) { running = true; draw(t0 + 1000 * BEAT * 0.15); running = false; return; }
-    new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting && !running) { running = true; requestAnimationFrame(draw); }
-      else if (!e.isIntersecting) running = false;
-    })).observe(cv);
-  })();
 })();
 </script>
 </body>

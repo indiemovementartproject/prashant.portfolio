@@ -1,7 +1,7 @@
 // Refreshes sutra-stats.json (follower count and reel views for the Builds panel)
 // from the Instagram API with Instagram Login. Needs IG_TOKEN: a long-lived token for
 // @sutra.theory with instagram_business_basic and instagram_business_manage_insights.
-// Run by .github/workflows/sutra-stats.yml every 6 hours; safe to run by hand too:
+// Run by .github/workflows/sutra-stats.yml every hour; safe to run by hand too:
 //   IG_TOKEN=... node scripts/sutra-stats.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
 
