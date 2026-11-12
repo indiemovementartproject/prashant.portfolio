@@ -4,7 +4,7 @@
 //   - Instagram API with Unified login (system-user token that never expires,
 //     graph.facebook.com, addressed by the Instagram account id below)
 // Only basic profile access is needed.
-// Run by .github/workflows/sutra-stats.yml every hour; safe to run by hand too:
+// Run by .github/workflows/sutra-stats.yml every 5 minutes; safe to run by hand too:
 //   IG_TOKEN=... node scripts/sutra-stats.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
 
