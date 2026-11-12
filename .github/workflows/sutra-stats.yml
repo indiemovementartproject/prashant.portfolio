@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Fetch followers and reel views
+      - name: Fetch followers and reels posted
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
         run: node scripts/sutra-stats.mjs

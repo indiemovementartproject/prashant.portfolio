@@ -1,4 +1,4 @@
-// Refreshes sutra-stats.json (the follower count on the Builds panel).
+// Refreshes sutra-stats.json (followers and reels posted on the Builds panel).
 // Needs IG_TOKEN for @sutra.theory, which can be either kind of token Meta hands out:
 //   - Instagram API with Instagram Login (60-day token, graph.instagram.com, /me)
 //   - Instagram API with Unified login (system-user token that never expires,
@@ -45,10 +45,20 @@ const file = new URL('../sutra-stats.json', import.meta.url);
 const stats = JSON.parse(readFileSync(file, 'utf8'));
 const me = await get(`/${user}`, { fields: 'followers_count' });
 stats.followers = me.followers_count;
+
+// Reels posted: walk the media list and count only reels (photos and carousels don't count).
+let reels = 0, page = await get(`/${user}/media`, { fields: 'media_product_type', limit: '100' });
+while (page) {
+  for (const m of page.data) if (m.media_product_type === 'REELS') reels++;
+  if (!page.paging || !page.paging.next) break;
+  const r = await fetch(page.paging.next); page = await r.json();
+  if (page.error) throw new Error('media list: ' + page.error.message);
+}
+stats.posts = reels;
 stats.updated = new Date().toISOString();
 stats.source = 'instagram';
 writeFileSync(file, JSON.stringify(stats, null, 2) + '\n');
-console.log('followers', stats.followers);
+console.log('followers', stats.followers, 'reels', stats.posts);
 
 // A 60-day Instagram Login token is kept alive by refreshing it. If Instagram hands back a
 // different string, the workflow stores it as the new IG_TOKEN secret. System-user tokens never expire.
